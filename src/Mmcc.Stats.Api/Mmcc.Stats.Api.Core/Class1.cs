@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mmcc.Stats.DataModels
+namespace Mmcc.Stats.Api.Core
 {
     public class Class1
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mmcc.Stats.Services
+namespace Mmcc.Stats.Api.Infrastructure
 {
     public class Class1
     {
