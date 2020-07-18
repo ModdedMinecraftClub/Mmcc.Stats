@@ -42,5 +42,6 @@
 
 #plot {
     margin:auto;
-    margin-top: 1%    
+    max-width: 98%;
+    height: 682px;
 }

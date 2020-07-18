@@ -10,36 +10,38 @@ async function onSubmit() {
     console.log(`to: ${document.getElementById("to").value}`)
     console.log(`mode: ${document.getElementById("mode-input").value}`)
     
-    let trace1 = {
-        x: [1, 2, 3, 4],
-        y: [10, 15, 13, 17],
-        mode: 'markers',
-        type: 'scatter'
-    };
-
-    let trace2 = {
-        x: [2, 3, 4, 5],
-        y: [16, 5, 11, 9],
-        mode: 'lines',
-        type: 'scatter'
-    };
-
-    let trace3 = {
-        x: [1, 2, 3, 4],
-        y: [12, 9, 15, 12],
-        mode: 'lines+markers',
-        type: 'scatter'
-    };
-
-    let data = [trace1, trace2, trace3];
+    let f = await getRaw();
+    
+    console.log(f);
+        
+    let data = createTraces(f);
+    
+    console.log(data);
 
     Plotly.newPlot('plot', data);
 }
 
 async function getRaw() {
-    
+    let response = await fetch('https://localhost:5001/api/playerbase-stats?from=2019-12-23&to=2020-01-03');
+    return await response.json();
 }
 
-async function createTraces(data) {
+function createTraces(data) {
+    let traces = [];
     
+    for (const serverData of data) {
+        if (serverData.timesList.length !== 0) {
+            let trace = {
+                name: serverData.serverName,
+                x: serverData.timesList,
+                y: serverData.playersOnlineList,
+                mode: 'lines',
+                type: 'scatter'
+            }
+            
+            traces.push(trace);
+        }
+    }
+    
+    return traces;
 }

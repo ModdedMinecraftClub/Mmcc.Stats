@@ -28,19 +28,16 @@ namespace Mmcc.Stats.Infrastructure.Services
                 var serverData = new ServerPlayerbaseData
                 {
                     ServerName = server.ServerName,
-                    Data = new List<ServerPlayerbaseDataPoint>()
+                    TimesList = new List<DateTime>(),
+                    PlayersOnlineList = new List<int>()
                 };
                 var pings = await _db.SelectPingsByServerAndDate(server.ServerId, fromDate, toDate);
                 
+
                 foreach (var ping in pings)
                 {
-                    var dataPoint = new ServerPlayerbaseDataPoint
-                    {
-                        Time = ping.PingTime,
-                        PlayersOnline = ping.PlayersOnline
-                    };
-
-                    serverData.Data.Add(dataPoint);
+                    serverData.TimesList.Add(ping.PingTime);
+                    serverData.PlayersOnlineList.Add(ping.PlayersOnline);
                 }
                 
                 serverPlayerbaseDataList.Add(serverData);
