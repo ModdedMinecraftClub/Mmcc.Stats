@@ -7,17 +7,12 @@ using Mmcc.Stats.Core.Models;
 
 namespace Mmcc.Stats.Infrastructure.Services
 {
-    public interface IPlayerbaseStatsService
+    public class ServersServersPlayerbaseService : IServersPlayerbaseService
     {
-        Task<IEnumerable<ServerPlayerbaseData>> GetRaw(DateTime fromDate, DateTime toDate);
-    }
-    
-    public class PlayerbaseStatsService : IPlayerbaseStatsService
-    {
-        private readonly ILogger<PlayerbaseStatsService> _logger;
+        private readonly ILogger<ServersServersPlayerbaseService> _logger;
         private readonly IDatabaseService _db;
 
-        public PlayerbaseStatsService(ILogger<PlayerbaseStatsService> logger, IDatabaseService db)
+        public ServersServersPlayerbaseService(ILogger<ServersServersPlayerbaseService> logger, IDatabaseService db)
         {
             _logger = logger;
             _db = db;

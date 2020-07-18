@@ -1,0 +1,46 @@
+﻿.date-form {
+    margin-top: 2%;
+}
+
+.date-input {
+    width: auto !important;
+}
+
+/* label focus color */
+.input-field input[type=text]:focus + label {
+    color: #2196f3;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #2196f3;
+    box-shadow: 0 1px 0 0 #2196f3;
+}
+
+.date-input:focus {
+    border-bottom: 1px solid #2196f3 !important;
+    -webkit-box-shadow: 0 1px 0 0 #2196f3 !important;
+    -moz-box-shadow: 0 1px 0 0 #2196f3 !important;
+    box-shadow: 0 1px 0 0 #2196f3 !important;
+}
+
+.text-from {
+    margin-right: 1%;
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+    color: #2196f3 !important;
+}
+
+#mode {
+    width: 10%;
+    margin: auto;
+}
+
+#btn {
+    margin-top: 1%;
+}
+
+#plot {
+    margin:auto;
+    margin-top: 1%    
+}

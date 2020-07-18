@@ -25,7 +25,7 @@ namespace Mmcc.Stats
             services.Configure<DatabaseSettings>(Configuration.GetSection("DatabaseSettings"));
             
             services.AddScoped<IDatabaseService, DatabaseService>();
-            services.AddScoped<IPlayerbaseStatsService, PlayerbaseStatsService>();
+            services.AddScoped<IServersPlayerbaseService, ServersServersPlayerbaseService>();
             
             services.AddScoped<IPollerService, PollerService>();
             services.AddHostedService<PollerTimedHostedService>();

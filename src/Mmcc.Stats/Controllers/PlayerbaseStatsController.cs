@@ -15,17 +15,17 @@ namespace Mmcc.Stats.Controllers
     {
         private readonly ILogger<PlayerbaseStatsController> _logger;
         private readonly IDatabaseService _dbService;
-        private readonly IPlayerbaseStatsService _playerbaseStatsService;
+        private readonly IServersPlayerbaseService _serversPlayerbaseService;
 
         public PlayerbaseStatsController(
             ILogger<PlayerbaseStatsController> logger,
             IDatabaseService dbService,
-            IPlayerbaseStatsService playerbaseStatsService
+            IServersPlayerbaseService serversPlayerbaseService
             )
         {
             _logger = logger;
             _dbService = dbService;
-            _playerbaseStatsService = playerbaseStatsService;
+            _serversPlayerbaseService = serversPlayerbaseService;
         }
 
         // GET /api/playerbase-stats
@@ -42,7 +42,7 @@ namespace Mmcc.Stats.Controllers
                 to = to.AddDays(1);
             }
 
-            var data = await _playerbaseStatsService.GetRaw(from, to);
+            var data = await _serversPlayerbaseService.GetRaw(from, to);
 
             return Ok(data);
         }

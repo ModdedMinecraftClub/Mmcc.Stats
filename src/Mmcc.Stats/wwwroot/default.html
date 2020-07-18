@@ -2,11 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello</title>
+    <title>MMCC Stats</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/default.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" defer></script>
     <script src="/js/default.js" defer></script>
+    <script src="/lib/plotly-latest.min.js" defer></script>
 </head>
 <body>
-<h1>Hello</h1>
-<button onclick="hello()">Click me</button>
+
+<nav>
+    <div class="nav-wrapper blue">
+        <a href="#" class="brand-logo center">MMCC Stats</a>        
+    </div>
+</nav>
+
+<div class="date-form">
+    <h6 class="center-align">
+        <b>From:</b>
+        <input type="date" id="from" class="date-input" name="from"/>
+        <b>To:</b>
+        <input type="date" id="to" class="date-input" name="to"/>        
+    </h6>    
+</div>
+
+<div class="input-field" id="mode">
+    <h6 class="center-align">
+        <b>Display mode:</b>
+        <select id="mode-input">
+            <option value="1">Raw data</option>
+            <option value="2">Weekly average</option>
+            <option value="3">Daily average</option>
+            <option value="4">Hourly average</option>            
+        </select>
+    </h6>    
+</div>
+
+<div id="btn" class="center-align">
+    <a class="waves-effect blue btn-small" onclick="onSubmit()">Submit</a>
+</div>
+
+<div id="plot" style="width:70%;height:100%;"></div>
+
 </body>
 </html>
