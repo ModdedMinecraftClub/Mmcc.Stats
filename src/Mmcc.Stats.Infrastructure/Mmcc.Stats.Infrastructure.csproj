@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0-preview.6.20305.6" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0-preview.6.20305.6" />
+    <PackageReference Include="MySql.Data" Version="8.0.21" />
+    <PackageReference Include="TraceLd.MineStatSharp" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mmcc.Stats.Core\Mmcc.Stats.Core.csproj" />
+  </ItemGroup>
+
+</Project>
