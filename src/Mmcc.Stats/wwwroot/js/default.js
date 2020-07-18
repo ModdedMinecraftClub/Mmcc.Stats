@@ -34,7 +34,7 @@ function createTraces(data) {
             let trace = {
                 name: serverData.serverName,
                 x: serverData.timesList,
-                y: serverData.playersOnlineList,
+                y: smooth(serverData.playersOnlineList, 2),
                 mode: 'lines',
                 type: 'scatter'
             }
