@@ -17,102 +17,107 @@
 </head>
 <body>
 
-<nav class="navbar is-link" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="">
-            <img src="/img/logo_white.png">
-        </a>
+<div class="wrapper">
+    <div class="cont">
+        <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="">
+                    <img src="/img/logo_white.png">
+                </a>
 
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
+                <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar-b">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
 
-    <div class="navbar-menu">
-        <div class="navbar-start">
-            <a class="navbar-item" href="https://www.moddedminecraft.club/">
-                MMCC Home
-            </a>
+            <div id="navbar-b" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="https://www.moddedminecraft.club/">
+                        MMCC Home
+                    </a>
 
-            <a class="navbar-item" href="https://wiki.moddedminecraft.club/">
-                Wiki
-            </a>
+                    <a class="navbar-item" href="https://wiki.moddedminecraft.club/">
+                        Wiki
+                    </a>
 
-            <a class="navbar-item" href="https://forum.moddedminecraft.club/">
-                Forum
-            </a>
-        </div>
+                    <a class="navbar-item" href="https://forum.moddedminecraft.club/">
+                        Forum
+                    </a>
+                </div>
 
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <button class="button is-danger" onclick="location.href='https://www.moddedminecraft.club/store.php';">
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <button class="button is-danger" onclick="location.href='https://www.moddedminecraft.club/store.php';">
                         <span class="icon">
                             <i class="fas fa-heart"></i>
                         </span>
-                        <span>Donate</span>
-                    </button>                    
-                    <button class="button is-primary" onclick="location.href='https://discord.com/invite/8EgWdQC';">
+                                <span>Donate</span>
+                            </button>
+                            <button class="button is-primary" onclick="location.href='https://discord.com/invite/8EgWdQC';">
                         <span class="icon">
                             <i class="fab fa-discord"></i>
                         </span>
-                        <span>Discord</span>
-                    </button>
-                    <button class="button is-dark" onclick="location.href='https://github.com/ModdedMinecraftClub/Mmcc.Stats';">
+                                <span>Discord</span>
+                            </button>
+                            <button class="button is-dark" onclick="location.href='https://github.com/ModdedMinecraftClub/Mmcc.Stats';">
                         <span class="icon">
                             <i class="fab fa-github"></i>
                         </span>
-                        <span>GitHub</span>
-                    </button>
+                                <span>GitHub</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="date-selector">
+            From:&nbsp;
+            <div class="field">
+                <div class="control">
+                    <input class="input is-link" id="from" type="date">
+                </div>
+            </div>
+            &nbsp;To:&nbsp;
+            <div class="field">
+                <div class="control">
+                    <input class="input is-link" id="to" type="date">
                 </div>
             </div>
         </div>
-    </div>
-</nav>
 
-<div class="date-selector">
-    From:&nbsp;
-    <div class="field">
-        <div class="control">
-            <input class="input is-link" id="from" type="date">
+        <div class="mode-selector">
+            <div class="select">
+                <select id="mode-input">
+                    <option>Smoothed data</option>
+                    <option>Raw data</option>
+                </select>
+            </div>
         </div>
-    </div>
-    &nbsp;To:&nbsp;
-    <div class="field">
-        <div class="control">
-            <input class="input is-link" id="to" type="date">
+
+        <div class="submit-btn">
+            <button class="button is-link" onclick="onSubmit()">
+                <span>Generate chart</span>
+            </button>
         </div>
+
+        <div id="plot"></div>
+    </div>
+    <div class="footer-d">
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <p>
+                    <strong>MMCC Stats</strong> by <a href="https://github.com/ModdedMinecraftClub/Mmcc.Stats/graphs/contributors">ModdedMinecraftClub and contributors</a>. The source code is licensed
+                    <a href="https://github.com/ModdedMinecraftClub/Mmcc.Stats/blob/master/LICENSE">AGPL-3.0</a>.
+                    Some icons from Font Awesome, <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>.
+                </p>
+            </div>
+        </footer>
     </div>
 </div>
-
-<div class="mode-selector">
-    <div class="select">
-        <select id="mode-input">
-            <option>Smoothed data</option>
-            <option>Raw data</option>
-        </select>
-    </div>
-</div>
-
-<div class="submit-btn">
-    <button class="button is-link" onclick="onSubmit()">
-        <span>Generate chart</span>
-    </button>
-</div>
-
-<div id="plot"></div>
-
-<footer class="footer">
-    <div class="content has-text-centered">
-        <p>
-            <strong>MMCC Stats</strong> by <a href="https://github.com/ModdedMinecraftClub/Mmcc.Stats/graphs/contributors">ModdedMinecraftClub and contributors</a>. The source code is licensed
-            <a href="https://github.com/ModdedMinecraftClub/Mmcc.Stats/blob/master/LICENSE">AGPL-3.0</a>.
-            Some icons from Font Awesome, <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>.
-        </p>
-    </div>
-</footer>
 
 </body>
 </html>

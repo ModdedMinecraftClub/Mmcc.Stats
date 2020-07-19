@@ -1,4 +1,19 @@
-﻿.date-selector {
+﻿html, body {
+    height: 100%;
+    width: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.cont {
+    flex-grow: 1;
+}
+
+.date-selector {
     margin-top: 2%;
     padding: 0;
     display: flex;
@@ -26,6 +41,7 @@
 
 #plot {
     margin:auto;
-    max-width: 98%;
-    height: 682px;
+    max-width: 99%;
+    max-height: 682px;
+    object-fit: contain;
 }
