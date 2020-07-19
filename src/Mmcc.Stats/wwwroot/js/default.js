@@ -10,20 +10,23 @@
     
     if (fromDate > toDate) {
         alert("From date cannot be bigger than To date");
+        return;
+    }
+
+    let response = await fetch(`https://localhost:5001/api/playerbase-stats?from=${fromDate}&to=${toDate}`);
+    
+    if (!response.ok) {
+        alert("API HTTP-Error" + response.status);
+        return;
     }
     
-    let apiResponse = await getData(fromDate, toDate);
+    let responseData = await response.json();
 
     if (mode === 'Smoothed data') {
-        createPlot(apiResponse, true);
+        createPlot(responseData, true);
     } else {
-        createPlot(apiResponse, false);
+        createPlot(responseData, false);
     }
-}
-
-async function getData(fromDate, toDate) {
-    let response = await fetch(`https://localhost:5001/api/playerbase-stats?from=${fromDate}&to=${toDate}`);
-    return await response.json();
 }
 
 function createPlot(data, isSmooth) {
