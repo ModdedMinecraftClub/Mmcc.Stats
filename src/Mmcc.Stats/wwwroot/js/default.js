@@ -8,6 +8,10 @@
         return;
     }
     
+    if (fromDate > toDate) {
+        alert("From date cannot be bigger than To date");
+    }
+    
     let apiResponse = await getData(fromDate, toDate);
 
     if (mode === 'Smoothed data') {
@@ -18,7 +22,6 @@
 }
 
 async function getData(fromDate, toDate) {
-    //https://localhost:5001/api/playerbase-stats?from=2019-12-23&to=2020-01-03
     let response = await fetch(`https://localhost:5001/api/playerbase-stats?from=${fromDate}&to=${toDate}`);
     return await response.json();
 }
