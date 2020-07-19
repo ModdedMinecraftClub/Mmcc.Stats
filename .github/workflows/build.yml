@@ -1,4 +1,4 @@
-name: master
+name: build
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.302
-    - name: Install dependencies
+    - name: Restore packages
       working-directory: ./src/Mmcc.Stats
       run: dotnet restore
     - name: Build
