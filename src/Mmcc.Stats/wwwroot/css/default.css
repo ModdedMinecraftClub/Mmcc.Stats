@@ -1,43 +1,27 @@
-﻿.date-form {
+﻿.date-selector {
     margin-top: 2%;
+    padding: 0;
+    display: flex;
+    justify-content: center;
 }
 
-.date-input {
-    width: auto !important;
+.mode-selector {
+    margin-top: 0.2%;
+    padding: 0;
+    display: flex;
+    justify-content: center;
 }
 
-/* label focus color */
-.input-field input[type=text]:focus + label {
-    color: #2196f3;
-}
-/* label underline focus color */
-.input-field input[type=text]:focus {
-    border-bottom: 1px solid #2196f3;
-    box-shadow: 0 1px 0 0 #2196f3;
+.submit-btn {
+    margin-top: 0.8%;
+    padding: 0;
+    display: flex;
+    justify-content: center;
 }
 
-.date-input:focus {
-    border-bottom: 1px solid #2196f3 !important;
-    -webkit-box-shadow: 0 1px 0 0 #2196f3 !important;
-    -moz-box-shadow: 0 1px 0 0 #2196f3 !important;
-    box-shadow: 0 1px 0 0 #2196f3 !important;
-}
-
-.text-from {
-    margin-right: 1%;
-}
-
-.dropdown-content li > a, .dropdown-content li > span {
-    color: #2196f3 !important;
-}
-
-#mode {
-    width: 10%;
-    margin: auto;
-}
-
-#btn {
-    margin-top: 1%;
+#from {
+    text-align: center;
+    width: auto;
 }
 
 #plot {

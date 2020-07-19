@@ -1,10 +1,4 @@
-﻿// initialise UI components
-document.addEventListener('DOMContentLoaded', function() {
-    const elems = document.querySelectorAll('select');
-    const instances = M.FormSelect.init(elems);
-});
-
-async function onSubmit() {
+﻿async function onSubmit() {
     
     console.log(`from: ${document.getElementById("from").value}`)
     console.log(`to: ${document.getElementById("to").value}`)
@@ -34,7 +28,7 @@ function createTraces(data) {
             let trace = {
                 name: serverData.serverName,
                 x: serverData.timesList,
-                y: smooth(serverData.playersOnlineList, 2),
+                y: smooth(serverData.playersOnlineList, 15),
                 mode: 'lines',
                 type: 'scatter'
             }

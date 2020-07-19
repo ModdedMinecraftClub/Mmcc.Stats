@@ -2,46 +2,102 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MMCC Stats</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">    
     <link rel="stylesheet" type="text/css" href="/css/default.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" defer></script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="/js/default.js" defer></script>
     <script src="/lib/plotly-latest.min.js" defer></script>
     <script src="/lib/smooth.min.js" defer></script>
 </head>
 <body>
 
-<nav>
-    <div class="nav-wrapper blue">
-        <a href="#" class="brand-logo center">MMCC Stats</a>        
+<nav class="navbar is-link" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="">
+            <img src="/img/logo_white.png">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="https://www.moddedminecraft.club/">
+                MMCC Home
+            </a>
+
+            <a class="navbar-item" href="https://wiki.moddedminecraft.club/">
+                Wiki
+            </a>
+
+            <a class="navbar-item" href="https://forum.moddedminecraft.club/">
+                Forum
+            </a>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <button class="button is-danger" onclick="location.href='https://www.moddedminecraft.club/store.php';">
+                        <span class="icon">
+                            <i class="fas fa-heart"></i>
+                        </span>
+                        <span>Donate</span>
+                    </button>                    
+                    <button class="button is-primary" onclick="location.href='https://discord.com/invite/8EgWdQC';">
+                        <span class="icon">
+                            <i class="fab fa-discord"></i>
+                        </span>
+                        <span>Discord</span>
+                    </button>
+                    <button class="button is-dark" onclick="location.href='https://github.com/ModdedMinecraftClub/Mmcc.Stats';">
+                        <span class="icon">
+                            <i class="fab fa-github"></i>
+                        </span>
+                        <span>GitHub</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </nav>
 
-<div class="date-form">
-    <h6 class="center-align">
-        <b>From:</b>
-        <input type="date" id="from" class="date-input" name="from"/>
-        <b>To:</b>
-        <input type="date" id="to" class="date-input" name="to"/>        
-    </h6>    
+<div class="date-selector">
+    From:&nbsp;
+    <div class="field">
+        <div class="control">
+            <input class="input is-link" id="from" type="date">
+        </div>
+    </div>
+    &nbsp;To:&nbsp;
+    <div class="field">
+        <div class="control">
+            <input class="input is-link" id="to" type="date">
+        </div>
+    </div>
 </div>
 
-<div class="input-field" id="mode">
-    <h6 class="center-align">
-        <b>Display mode:</b>
+<div class="mode-selector">
+    <div class="select">
         <select id="mode-input">
-            <option value="1">Raw data</option>
-            <option value="2">Weekly average</option>
-            <option value="3">Daily average</option>
-            <option value="4">Hourly average</option>            
+            <option itemid="1">Smoothed data</option>
+            <option itemid="2">Raw data</option>
         </select>
-    </h6>    
+    </div>
 </div>
 
-<div id="btn" class="center-align">
-    <a class="waves-effect blue btn-small" onclick="onSubmit()">Submit</a>
+<div class="submit-btn">
+    <button class="button is-link" onclick="onSubmit()">
+        <span>Generate chart</span>
+    </button>
 </div>
 
 <div id="plot"></div>
