@@ -66,11 +66,10 @@ function createPlot(data, isSmooth) {
         }
     }
 
-    var layout = {
+    let layout = {
         autosize: true // set autosize to rescale
-    };
-    
-    var config = {responsive: true}
+    };    
+    let config = {responsive: true}
 
     Plotly.newPlot('plot', traces, layout, config);
 }
