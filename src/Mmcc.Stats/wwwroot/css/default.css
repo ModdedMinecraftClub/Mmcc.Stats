@@ -18,7 +18,15 @@
     padding: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    line-height: 2.6em
+}
+
+.datepicker {
+    border-color: #dbdbdb !important;
+}
+
+.datepicker:focus {
+    border-color: #3273dc !important;
 }
 
 .mode-selector {
