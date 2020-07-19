@@ -26,6 +26,8 @@ namespace Mmcc.Stats
             
             services.AddScoped<IDatabaseService, DatabaseService>();
             services.AddScoped<IServersPlayerbaseService, ServersServersPlayerbaseService>();
+
+            services.AddHostedService<StartupChecksHostedService>();
             
             services.AddScoped<IPollerService, PollerService>();
             services.AddHostedService<PollerTimedHostedService>();

@@ -10,7 +10,6 @@ namespace Mmcc.Stats.Infrastructure.HostedServices
 {
     public class PollerTimedHostedService : IHostedService, IDisposable
     {
-        private int _executionCount = 0;
         private Timer _timer;
         private readonly ILogger<PollerTimedHostedService> _logger;
 
@@ -36,8 +35,6 @@ namespace Mmcc.Stats.Infrastructure.HostedServices
 
         private async void DoWork(object state)
         {
-            Interlocked.Increment(ref _executionCount);
-            
             _logger.LogInformation("Poller Timed Hosted Service: Polling...");
 
             using var scope = Services.CreateScope();
