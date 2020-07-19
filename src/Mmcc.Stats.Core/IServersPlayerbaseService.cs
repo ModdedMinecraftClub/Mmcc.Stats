@@ -7,6 +7,6 @@ namespace Mmcc.Stats.Core
 {
     public interface IServersPlayerbaseService
     {
-        Task<IEnumerable<ServerPlayerbaseData>> GetRaw(DateTime fromDate, DateTime toDate);
+        Task<IEnumerable<ServerPlayerbaseData>> GetByDate(DateTime fromDate, DateTime toDate);
     }
 }

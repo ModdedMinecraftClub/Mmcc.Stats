@@ -18,7 +18,7 @@ namespace Mmcc.Stats.Infrastructure.Services
             _db = db;
         }
 
-        public async Task<IEnumerable<ServerPlayerbaseData>> GetRaw(DateTime fromDate, DateTime toDate)
+        public async Task<IEnumerable<ServerPlayerbaseData>> GetByDate(DateTime fromDate, DateTime toDate)
         {
             var servers = await _db.SelectServers();
             var serverPlayerbaseDataList = new List<ServerPlayerbaseData>();

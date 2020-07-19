@@ -42,7 +42,7 @@ namespace Mmcc.Stats.Controllers
                 to = to.AddDays(1);
             }
 
-            var data = await _serversPlayerbaseService.GetRaw(from, to);
+            var data = await _serversPlayerbaseService.GetByDate(from, to);
 
             return Ok(data);
         }
