@@ -18,9 +18,9 @@ namespace Mmcc.Stats.Infrastructure.Services
             _db = db;
         }
 
-        public async Task<IEnumerable<ServerPlayerbaseData>> GetByDate(DateTime fromDate, DateTime toDate)
+        public async Task<IEnumerable<ServerPlayerbaseData>> GetByDateAsync(DateTime fromDate, DateTime toDate)
         {
-            var servers = await _db.SelectServers();
+            var servers = await _db.SelectServersAsync();
             var serverPlayerbaseDataList = new List<ServerPlayerbaseData>();
 
             foreach (var server in servers)
@@ -31,7 +31,7 @@ namespace Mmcc.Stats.Infrastructure.Services
                     TimesList = new List<DateTime>(),
                     PlayersOnlineList = new List<int>()
                 };
-                var pings = await _db.SelectPingsByServerAndDate(server.ServerId, fromDate, toDate);
+                var pings = await _db.SelectPingsByServerAndDateAsync(server.ServerId, fromDate, toDate);
                 
 
                 foreach (var ping in pings)

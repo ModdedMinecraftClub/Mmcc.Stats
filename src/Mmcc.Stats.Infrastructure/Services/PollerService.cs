@@ -21,7 +21,7 @@ namespace Mmcc.Stats.Infrastructure.Services
             _logger = logger;
         }
 
-        public async Task Poll()
+        public async Task PollAsync()
         {
             try
             {

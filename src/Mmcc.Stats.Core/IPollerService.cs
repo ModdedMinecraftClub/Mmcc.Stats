@@ -4,6 +4,6 @@ namespace Mmcc.Stats.Core
 {
     public interface IPollerService
     {
-        Task Poll();
+        Task PollAsync();
     }
 }

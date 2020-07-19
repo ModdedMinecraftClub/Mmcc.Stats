@@ -13,7 +13,7 @@ namespace Mmcc.Stats.Infrastructure.HostedServices
         private readonly ILogger<StartupChecksHostedService> _logger;
         private readonly IHostApplicationLifetime _appLifetime;
         private readonly IHostEnvironment _environment;
-        
+
         public IServiceProvider Services { get; }
 
         public StartupChecksHostedService(
@@ -32,35 +32,33 @@ namespace Mmcc.Stats.Infrastructure.HostedServices
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Environment: {_environment.EnvironmentName}");
-            await CheckDb();
+            await CheckDbAsync();
         }
 
-        private async Task CheckDb()
+        private async Task CheckDbAsync()
         {
             _logger.LogInformation("Checking database tables...");
-            
+
             using var scope = Services.CreateScope();
             var scopedDb = scope.ServiceProvider.GetRequiredService<IDatabaseService>();
 
-            var doesPingsTableExist = await scopedDb.DoesTableExistAsync("pings");
-            var doesServerTableExist = await scopedDb.DoesTableExistAsync("server");
-
-            if (!doesPingsTableExist)
-            {
-                _logger.LogCritical(
-                    "Pings table not found. Please ensure the table exists before starting the app. Exiting..."
-                );
-                _appLifetime.StopApplication();
-            } 
-            else if (!doesServerTableExist)
-            {
-                _logger.LogCritical(
-                    "Server table not found. Please ensure the table exists before starting the app. Exiting..."
-                );
-                _appLifetime.StopApplication();
-            }
+            await CheckIfTableExistsAsync("pings");
+            await CheckIfTableExistsAsync("server");
 
             _logger.LogInformation("Tables successfully found.");
+            
+            async Task CheckIfTableExistsAsync(string tableName)
+            {
+                var doesTableExist = await scopedDb.DoesTableExistAsync(tableName);
+
+                if (!doesTableExist)
+                {
+                    _logger.LogCritical(
+                        $"{tableName} table not found. Please ensure the table exists before starting the app. Exiting..."
+                    );
+                    _appLifetime.StopApplication();
+                }
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

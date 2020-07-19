@@ -42,7 +42,7 @@ namespace Mmcc.Stats.Infrastructure.HostedServices
                 scope.ServiceProvider
                     .GetRequiredService<IPollerService>();
 
-            await scopedProcessingService.Poll();
+            await scopedProcessingService.PollAsync();
             
             _logger.LogInformation("Poller Timed Hosted Service: Polling has completed.");
         }

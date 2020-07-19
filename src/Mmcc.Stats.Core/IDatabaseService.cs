@@ -8,9 +8,9 @@ namespace Mmcc.Stats.Core
     public interface IDatabaseService : IDisposable
     {
         Task<bool> DoesTableExistAsync(string name);
-        Task<IEnumerable<Server>> SelectServers();
+        Task<IEnumerable<Server>> SelectServersAsync();
         Task<IEnumerable<Server>> SelectEnabledServersAsync();
-        Task<IEnumerable<Ping>> SelectPingsByServerAndDate(int serverId, DateTime fromDate, DateTime toDate);
+        Task<IEnumerable<Ping>> SelectPingsByServerAndDateAsync(int serverId, DateTime fromDate, DateTime toDate);
         Task InsertPingsAsync(IEnumerable<Ping> pings);
     }
 }

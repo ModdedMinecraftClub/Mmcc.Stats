@@ -27,7 +27,7 @@ namespace Mmcc.Stats.Infrastructure.Services
             return q != 0;
         }
 
-        public async Task<IEnumerable<Server>> SelectServers()
+        public async Task<IEnumerable<Server>> SelectServersAsync()
         {
             const string sql =
                 "select serverId, serverIp, serverPort, serverName from server;";
@@ -41,7 +41,7 @@ namespace Mmcc.Stats.Infrastructure.Services
             return await _connection.QueryAsync<Server>(sql);
         }
         
-        public async Task<IEnumerable<Ping>> SelectPingsByServerAndDate(int serverId, DateTime fromDate, DateTime toDate)
+        public async Task<IEnumerable<Ping>> SelectPingsByServerAndDateAsync(int serverId, DateTime fromDate, DateTime toDate)
         {
             const string sql =
                 "select serverId, pingTime, playersOnline, playersMax from pings where serverId = @serverId and pingTime >= @fromDate and pingTime <= @toDate;";
