@@ -7,12 +7,12 @@ using Mmcc.Stats.Core.Models;
 
 namespace Mmcc.Stats.Infrastructure.Services
 {
-    public class ServersServersPlayerbaseService : IServersPlayerbaseService
+    public class ServersPlayerbaseService : IServersPlayerbaseService
     {
-        private readonly ILogger<ServersServersPlayerbaseService> _logger;
+        private readonly ILogger<ServersPlayerbaseService> _logger;
         private readonly IDatabaseService _db;
 
-        public ServersServersPlayerbaseService(ILogger<ServersServersPlayerbaseService> logger, IDatabaseService db)
+        public ServersPlayerbaseService(ILogger<ServersPlayerbaseService> logger, IDatabaseService db)
         {
             _logger = logger;
             _db = db;
