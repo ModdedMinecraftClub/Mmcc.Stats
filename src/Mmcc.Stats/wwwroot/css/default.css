@@ -38,6 +38,6 @@
 #plot {
     margin:auto;
     max-width: 99%;
-    max-height: 682px;
+    max-height: 99%;
     object-fit: contain;
 }
