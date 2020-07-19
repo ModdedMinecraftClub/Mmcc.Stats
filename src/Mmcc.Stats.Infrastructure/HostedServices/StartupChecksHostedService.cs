@@ -50,17 +50,16 @@ namespace Mmcc.Stats.Infrastructure.HostedServices
                 _logger.LogCritical(
                     "Pings table not found. Please ensure the table exists before starting the app. Exiting..."
                 );
-                    
                 _appLifetime.StopApplication();
-            }
-
-            if (!doesServerTableExist)
+            } 
+            else if (!doesServerTableExist)
             {
                 _logger.LogCritical(
                     "Server table not found. Please ensure the table exists before starting the app. Exiting..."
                 );
+                _appLifetime.StopApplication();
             }
-            
+
             _logger.LogInformation("Tables successfully found.");
         }
 
