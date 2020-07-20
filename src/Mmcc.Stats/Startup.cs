@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +24,11 @@ namespace Mmcc.Stats
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<DatabaseSettings>(Configuration.GetSection("DatabaseSettings"));
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
             
             services.AddScoped<IDatabaseService, DatabaseService>();
             services.AddScoped<IServersPlayerbaseService, ServersPlayerbaseService>();
@@ -40,9 +46,12 @@ namespace Mmcc.Stats
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseHttpsRedirection();
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                app.UseForwardedHeaders();
+            }
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
