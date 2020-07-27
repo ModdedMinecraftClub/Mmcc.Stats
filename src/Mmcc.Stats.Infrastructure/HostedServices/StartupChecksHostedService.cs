@@ -44,6 +44,7 @@ namespace Mmcc.Stats.Infrastructure.HostedServices
 
             await CheckIfTableExistsAsync("pings");
             await CheckIfTableExistsAsync("server");
+            await CheckIfTableExistsAsync("tpsstats");
 
             _logger.LogInformation("Tables successfully found.");
             
