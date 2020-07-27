@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mmcc.Stats.Core;
+using Mmcc.Stats.Core.Interfaces;
 using Mmcc.Stats.Core.Models.Settings;
 using Mmcc.Stats.Infrastructure.HostedServices;
 using Mmcc.Stats.Infrastructure.Services;

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace Mmcc.Stats.Core
+namespace Mmcc.Stats.Core.Interfaces
 {
     public interface IPollerService
     {

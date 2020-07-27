@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Mmcc.Stats.Core;
+using Mmcc.Stats.Core.Interfaces;
 
 namespace Mmcc.Stats.Infrastructure.HostedServices
 {

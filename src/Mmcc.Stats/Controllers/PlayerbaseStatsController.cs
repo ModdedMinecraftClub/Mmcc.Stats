@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Mmcc.Stats.Core;
+using Mmcc.Stats.Core.Interfaces;
 using Mmcc.Stats.Core.Models;
 using Mmcc.Stats.Infrastructure.Services;
 
