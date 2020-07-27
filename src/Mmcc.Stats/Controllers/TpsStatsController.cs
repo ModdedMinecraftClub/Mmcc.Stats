@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Mmcc.Stats.Core;
@@ -22,7 +23,8 @@ namespace Mmcc.Stats.Controllers
             _logger = logger;
             _tpsService = tpsService;
         }
-
+        
+        [Authorize(AuthenticationSchemes = "ClientApp")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody]TpsStat tpsStat)
         {

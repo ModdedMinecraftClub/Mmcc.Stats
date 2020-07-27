@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Mmcc.Stats.Core;
 using Mmcc.Stats.Core.Interfaces;
 using Mmcc.Stats.Core.Models.Settings;
+using Mmcc.Stats.Infrastructure.Authentication;
 using Mmcc.Stats.Infrastructure.HostedServices;
 using Mmcc.Stats.Infrastructure.Services;
 using Mmcc.Stats.Infrastructure.Services.DataAccess;
@@ -31,14 +31,19 @@ namespace Mmcc.Stats
                 options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
-            
+
+            services.AddScoped<ITokensService, TokensService>();
             services.AddScoped<IDbTablesService, DbTablesService>();
             services.AddScoped<IPingsService, PingsService>();
             services.AddScoped<IServersService, ServersService>();
             services.AddScoped<ITpsService, TpsService>();
             services.AddScoped<IServersPlayerbaseService, ServersPlayerbaseService>();
             services.AddScoped<IPollerService, PollerService>();
-
+            
+            services.AddAuthentication("ClientApp")
+                .AddScheme<ClientAppAuthenticationOptions, ClientAppAuthenticationHandler>("ClientApp", null);
+            services.AddAntiforgery(options => options.HeaderName = "X-Auth-Token");
+            
             services.AddHostedService<StartupChecksHostedService>();
             services.AddHostedService<PollerTimedHostedService>();
             
