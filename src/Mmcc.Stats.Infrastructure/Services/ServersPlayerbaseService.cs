@@ -10,17 +10,19 @@ namespace Mmcc.Stats.Infrastructure.Services
     public class ServersPlayerbaseService : IServersPlayerbaseService
     {
         private readonly ILogger<ServersPlayerbaseService> _logger;
-        private readonly IDatabaseService _db;
+        private readonly IPingsService _pingsService;
+        private readonly IServersService _serversService;
 
-        public ServersPlayerbaseService(ILogger<ServersPlayerbaseService> logger, IDatabaseService db)
+        public ServersPlayerbaseService(ILogger<ServersPlayerbaseService> logger, IPingsService pingsService, IServersService serversService)
         {
             _logger = logger;
-            _db = db;
+            _pingsService = pingsService;
+            _serversService = serversService;
         }
 
         public async Task<IEnumerable<ServerPlayerbaseData>> GetByDateAsync(DateTime fromDate, DateTime toDate)
         {
-            var servers = await _db.SelectServersAsync();
+            var servers = await _serversService.SelectServersAsync();
             var serverPlayerbaseDataList = new List<ServerPlayerbaseData>();
 
             foreach (var server in servers)
@@ -31,7 +33,7 @@ namespace Mmcc.Stats.Infrastructure.Services
                     TimesList = new List<DateTime>(),
                     PlayersOnlineList = new List<int>()
                 };
-                var pings = await _db.SelectPingsByServerAndDateAsync(server.ServerId, fromDate, toDate);
+                var pings = await _pingsService.SelectPingsByServerAndDateAsync(server.ServerId, fromDate, toDate);
                 
 
                 foreach (var ping in pings)

@@ -8,6 +8,7 @@ using Mmcc.Stats.Core;
 using Mmcc.Stats.Core.Models.Settings;
 using Mmcc.Stats.Infrastructure.HostedServices;
 using Mmcc.Stats.Infrastructure.Services;
+using Mmcc.Stats.Infrastructure.Services.DataAccess;
 
 namespace Mmcc.Stats
 {
@@ -30,7 +31,10 @@ namespace Mmcc.Stats
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
             
-            services.AddScoped<IDatabaseService, DatabaseService>();
+            services.AddScoped<IDbTablesService, DbTablesService>();
+            services.AddScoped<IPingsService, PingsService>();
+            services.AddScoped<IServersService, ServersService>();
+            services.AddScoped<ITpsService, TpsService>();
             services.AddScoped<IServersPlayerbaseService, ServersPlayerbaseService>();
             services.AddScoped<IPollerService, PollerService>();
 
@@ -46,7 +50,6 @@ namespace Mmcc.Stats
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseHttpsRedirection();
             }
             else
             {

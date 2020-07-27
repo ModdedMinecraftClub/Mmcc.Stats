@@ -14,17 +14,14 @@ namespace Mmcc.Stats.Controllers
     public class PlayerbaseStatsController : ControllerBase
     {
         private readonly ILogger<PlayerbaseStatsController> _logger;
-        private readonly IDatabaseService _dbService;
         private readonly IServersPlayerbaseService _serversPlayerbaseService;
 
         public PlayerbaseStatsController(
             ILogger<PlayerbaseStatsController> logger,
-            IDatabaseService dbService,
             IServersPlayerbaseService serversPlayerbaseService
             )
         {
             _logger = logger;
-            _dbService = dbService;
             _serversPlayerbaseService = serversPlayerbaseService;
         }
 

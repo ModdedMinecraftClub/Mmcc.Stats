@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Mmcc.Stats.Core\Mmcc.Stats.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authentication" />
+  </ItemGroup>
+
 </Project>
