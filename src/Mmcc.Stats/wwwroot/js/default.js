@@ -37,7 +37,7 @@ async function onSubmit() {
         return;
     }
 
-    let response = await fetch(`https://poller.moddedminecraft.club/api/playerbase-stats?from=${fromDate}&to=${toDate}`);
+    let response = await fetch(`/api/playerbase-stats?from=${fromDate}&to=${toDate}`);
     
     if (!response.ok) {
         alert("API HTTP-Error" + response.status);
