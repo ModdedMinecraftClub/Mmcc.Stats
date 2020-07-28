@@ -26,7 +26,7 @@ namespace Mmcc.Stats.Infrastructure.Services.DataAccess
         {
             const string sql =
                 "select serverId, serverIp, serverPort, serverName from server where serverId = @serverId;";
-            return await _connection.QuerySingleOrDefaultAsync(sql, new {serverId});
+            return await _connection.QuerySingleOrDefaultAsync<Server>(sql, new {serverId});
         }
 
         public async Task<IEnumerable<Server>> SelectServersAsync()
