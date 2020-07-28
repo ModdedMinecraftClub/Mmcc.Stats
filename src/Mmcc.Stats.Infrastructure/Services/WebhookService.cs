@@ -32,12 +32,12 @@ namespace Mmcc.Stats.Infrastructure.Services
 
         public async Task SendStaffAlertMessage(string message)
         {
-            await _webhookClient.SendMessageAsync($"<{_settings.StaffRoleId}> {message}");
+            await _webhookClient.SendMessageAsync($"<@&{_settings.StaffRoleId}> {message}");
         }
 
         public async Task SendStaffAlertEmbed(Embed embed)
         {
-            await _webhookClient.SendMessageAsync($"<{_settings.StaffRoleId}>", embeds: new[] {embed});
+            await _webhookClient.SendMessageAsync($"<@&{_settings.StaffRoleId}>", embeds: new[] {embed});
         }
     }
 }

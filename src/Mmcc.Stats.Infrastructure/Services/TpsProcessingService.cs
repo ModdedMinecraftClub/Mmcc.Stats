@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Discord;
 using Microsoft.Extensions.Logging;
 using Mmcc.Stats.Core;
@@ -50,10 +51,18 @@ namespace Mmcc.Stats.Infrastructure.Services
                     .WithTitle($"TPS of the following server has dropped below {_settings.TpsToAlertAt}")
                     .WithColor(Color.Red)
                     .WithThumbnailUrl("https://www.moddedminecraft.club/data/icon.png")
-                    .AddField("Server details", $"Server name: {server.ServerName}, Server ID: {server.ServerId}")
-                    .AddField("TPS over the last 10 minutes", tpsStat.Tps);
+                    .AddField("Server details", $"Server name: {server.ServerName}\nServer ID: {server.ServerId}")
+                    .AddField("Average TPS over the last 10 minutes", $"{tpsStat.Tps:0.00}")
+                    .WithCurrentTimestamp();
 
-                await _webhookService.SendStaffAlertEmbed(embed.Build());
+                try
+                {
+                    await _webhookService.SendStaffAlertEmbed(embed.Build());
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "Exception occurred while sending an embed to Discord.");
+                }
             }
             
             // insert stat into db;

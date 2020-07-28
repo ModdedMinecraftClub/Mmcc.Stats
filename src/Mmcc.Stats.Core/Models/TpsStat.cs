@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Text.Json.Serialization;
-using Mmcc.Stats.Core.Json;
 
 namespace Mmcc.Stats.Core.Models
 {
