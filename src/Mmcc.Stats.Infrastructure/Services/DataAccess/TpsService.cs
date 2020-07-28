@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using Mmcc.Stats.Core.Interfaces;
@@ -17,6 +19,19 @@ namespace Mmcc.Stats.Infrastructure.Services.DataAccess
         {
             _logger = logger;
             _connection = new MySqlConnection(options.ToString());
+        }
+
+        public async Task<IEnumerable<TpsStat>> SelectTpsByServerAndDateAsync(int serverId, DateTime fromDate, DateTime toDate)
+        {
+            const string sql =
+                "select serverId, statTime, tps from tpsstats where serverId = @serverId and statTime >= @fromDate and statTime <= @toDate;";
+            var payload = new
+            {
+                serverId,
+                fromDate,
+                toDate
+            };
+            return await _connection.QueryAsync<TpsStat>(sql, payload);
         }
         
         public async Task InsertTpsStatAsync(TpsStat tpsStat)

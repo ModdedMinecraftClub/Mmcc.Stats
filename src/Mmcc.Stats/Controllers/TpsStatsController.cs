@@ -13,9 +13,9 @@ namespace Mmcc.Stats.Controllers
     public class TpsStatsController
     {
         private readonly ILogger<TpsStatsController> _logger;
-        private readonly ITpsProcessingService _service;
+        private readonly IServerTpsService _service;
         
-        public TpsStatsController(ILogger<TpsStatsController> logger, ITpsProcessingService service)
+        public TpsStatsController(ILogger<TpsStatsController> logger, IServerTpsService service)
         {
             _logger = logger;
             _service = service;
@@ -25,7 +25,7 @@ namespace Mmcc.Stats.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody]McTpsStatDto tpsStatDto)
         {
-            await _service.ProcessIncomingPostRequest(tpsStatDto);
+            await _service.ProcessIncomingTps(tpsStatDto);
             return new OkResult();
         }
     }

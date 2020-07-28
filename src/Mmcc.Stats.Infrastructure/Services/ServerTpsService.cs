@@ -1,25 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Microsoft.Extensions.Logging;
 using Mmcc.Stats.Core;
 using Mmcc.Stats.Core.Interfaces;
+using Mmcc.Stats.Core.Models;
 using Mmcc.Stats.Core.Models.Dto;
 using Mmcc.Stats.Core.Models.Settings;
 using Mmcc.Stats.Infrastructure.Extensions;
 
 namespace Mmcc.Stats.Infrastructure.Services
 {
-    public class TpsProcessingService : ITpsProcessingService
+    public class ServerTpsService : IServerTpsService
     {
-        private readonly ILogger<TpsProcessingService> _logger;
+        private readonly ILogger<ServerTpsService> _logger;
         private readonly ITpsService _tpsService;
         private readonly IWebhookService _webhookService;
         private readonly WebhookSettings _settings;
         private readonly IServerService _serverService;
 
-        public TpsProcessingService(
-            ILogger<TpsProcessingService> logger,
+        public ServerTpsService(
+            ILogger<ServerTpsService> logger,
             ITpsService tpsService,
             IWebhookService webhookService, 
             WebhookSettings settings,
@@ -33,7 +36,24 @@ namespace Mmcc.Stats.Infrastructure.Services
             _serverService = serverService;
         }
 
-        public async Task ProcessIncomingPostRequest(McTpsStatDto tpsStatDto)
+        public async Task<IEnumerable<ServerTpsData>> GetByDateAsync(DateTime fromDate, DateTime toDate)
+            => await Task.WhenAll((await _serverService.SelectServersAsync())
+                .GroupBy(x => x.ServerId)
+                .Select(async y =>
+                {
+                    var tps = await _tpsService.SelectTpsByServerAndDateAsync(y.Key, fromDate, toDate);
+                    return new ServerTpsData
+                    {
+                        ServerName = y.First().ServerName,
+                        TpsStats = tps.Select(stat => new ServerTpsDto
+                        {
+                            Time = stat.StatTime,
+                            Tps = stat.Tps
+                        })
+                    };
+                }));
+
+        public async Task ProcessIncomingTps(McTpsStatDto tpsStatDto)
         {
             // convert from dto to model;
             var tpsStat = tpsStatDto.AsTpsStat();

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Mmcc.Stats.Core;
 using Mmcc.Stats.Core.Interfaces;
 using Mmcc.Stats.Core.Models;
+using Mmcc.Stats.Core.Models.Dto;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -30,12 +31,15 @@ namespace Mmcc.Stats.Infrastructure.Services
                 .GroupBy(x => x.ServerId)
                 .Select(async y =>
                 {
-                    var pings = (await _pingService.SelectPingsByServerAndDateAsync(y.Key, fromDate, toDate)).ToList();
+                    var pings = await _pingService.SelectPingsByServerAndDateAsync(y.Key, fromDate, toDate);
                     return new ServerPlayerbaseData
                     {
                         ServerName = y.First().ServerName,
-                        TimesList = pings.Select(ping => ping.PingTime).ToList(),
-                        PlayersOnlineList = pings.Select(ping => ping.PlayersOnline).ToList()
+                        Pings = pings.Select(ping => new PingDto
+                        {
+                            PlayersOnline = ping.PlayersOnline,
+                            Time = ping.PingTime
+                        })
                     };
                 }));
     }

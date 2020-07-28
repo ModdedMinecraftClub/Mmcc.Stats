@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Mmcc.Stats.Core.Models.Dto;
 
 namespace Mmcc.Stats.Core.Models
 {
     public class ServerPlayerbaseData
     {
         public string ServerName { get; set; }
-        public IList<DateTime> TimesList { get; set; }
-        public IList<int> PlayersOnlineList { get; set; }
+        public IEnumerable<PingDto> Pings { get; set; }
     }
 }
