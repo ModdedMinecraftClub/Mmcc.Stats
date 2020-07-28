@@ -14,10 +14,10 @@ namespace Mmcc.Stats.Infrastructure.Services.DataAccess
         private readonly ILogger<DbTableService> _logger;
         private readonly MySqlConnection _connection;
 
-        public DbTableService(ILogger<DbTableService> logger, IOptions<DatabaseSettings> options)
+        public DbTableService(ILogger<DbTableService> logger, DatabaseSettings options)
         {
             _logger = logger;
-            _connection = new MySqlConnection(options.Value.ToString());
+            _connection = new MySqlConnection(options.ToString());
         }
         
         public async Task<bool> DoesTableExistAsync(string name)

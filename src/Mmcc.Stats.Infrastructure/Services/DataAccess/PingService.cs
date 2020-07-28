@@ -18,10 +18,10 @@ namespace Mmcc.Stats.Infrastructure.Services.DataAccess
     private readonly ILogger<PingService> _logger;
     private readonly MySqlConnection _connection;
 
-    public PingService(ILogger<PingService> logger, IOptions<DatabaseSettings> options)
+    public PingService(ILogger<PingService> logger, DatabaseSettings options)
     {
         _logger = logger;
-        _connection = new MySqlConnection(options.Value.ToString());
+        _connection = new MySqlConnection(options.ToString());
     }
 
     public async Task<IEnumerable<Ping>> SelectPingsByServerAndDateAsync(int serverId, DateTime fromDate,

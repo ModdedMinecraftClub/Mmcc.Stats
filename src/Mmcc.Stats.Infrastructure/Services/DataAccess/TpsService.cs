@@ -15,10 +15,10 @@ namespace Mmcc.Stats.Infrastructure.Services.DataAccess
         private readonly ILogger<TpsService> _logger;
         private readonly MySqlConnection _connection;
 
-        public TpsService(ILogger<TpsService> logger, IOptions<DatabaseSettings> options)
+        public TpsService(ILogger<TpsService> logger, DatabaseSettings options)
         {
             _logger = logger;
-            _connection = new MySqlConnection(options.Value.ToString());
+            _connection = new MySqlConnection(options.ToString());
         }
         
         public async Task InsertTpsStatAsync(TpsStat tpsStat)

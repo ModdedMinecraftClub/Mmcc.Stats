@@ -16,10 +16,10 @@ namespace Mmcc.Stats.Infrastructure.Services.DataAccess
         private readonly ILogger<ServerService> _logger;
         private readonly MySqlConnection _connection;
 
-        public ServerService(ILogger<ServerService> logger, IOptions<DatabaseSettings> options)
+        public ServerService(ILogger<ServerService> logger, DatabaseSettings options)
         {
             _logger = logger;
-            _connection = new MySqlConnection(options.Value.ToString());
+            _connection = new MySqlConnection(options.ToString());
         }
         
         public async Task<IEnumerable<Server>> SelectServersAsync()

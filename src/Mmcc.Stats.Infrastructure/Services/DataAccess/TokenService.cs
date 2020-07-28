@@ -15,10 +15,10 @@ namespace Mmcc.Stats.Infrastructure.Services.DataAccess
         private readonly ILogger<TokenService> _logger;
         private readonly MySqlConnection _connection;
         
-        public TokenService(ILogger<TokenService> logger, IOptions<DatabaseSettings> options)
+        public TokenService(ILogger<TokenService> logger, DatabaseSettings options)
         {
             _logger = logger;
-            _connection = new MySqlConnection(options.Value.ToString());
+            _connection = new MySqlConnection(options.ToString());
         }
 
         public async Task<Token> GetToken(string value)
