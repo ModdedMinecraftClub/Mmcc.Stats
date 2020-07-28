@@ -17,7 +17,8 @@ namespace Mmcc.Stats.Infrastructure.Services
         private readonly IPingService _pingService;
         private readonly IServerService _serverService;
 
-        public PlayerbaseService(ILogger<PlayerbaseService> logger, IPingService pingService, IServerService serverService)
+        public PlayerbaseService(ILogger<PlayerbaseService> logger, IPingService pingService,
+            IServerService serverService)
         {
             _logger = logger;
             _pingService = pingService;
@@ -25,22 +26,17 @@ namespace Mmcc.Stats.Infrastructure.Services
         }
 
         public async Task<IEnumerable<ServerPlayerbaseData>> GetByDateAsync(DateTime fromDate, DateTime toDate)
-        {
-            var servers = await _serverService.SelectServersAsync();
-            var queryTasks =
-                servers.GroupBy(x => x.ServerId)
-                    .Select(async y =>
+            => await Task.WhenAll((await _serverService.SelectServersAsync())
+                .GroupBy(x => x.ServerId)
+                .Select(async y =>
+                {
+                    var pings = (await _pingService.SelectPingsByServerAndDateAsync(y.Key, fromDate, toDate)).ToList();
+                    return new ServerPlayerbaseData
                     {
-                        var pings = (await _pingService.SelectPingsByServerAndDateAsync(y.Key, fromDate, toDate)).ToList();
-                        return new ServerPlayerbaseData
-                        {
-                            ServerName = y.First().ServerName,
-                            TimesList = pings.Select(ping => ping.PingTime).ToList(),
-                            PlayersOnlineList = pings.Select(ping => ping.PlayersOnline).ToList()
-                        };
-                    });
-            var output = await Task.WhenAll(queryTasks);
-            return output;
-        }
+                        ServerName = y.First().ServerName,
+                        TimesList = pings.Select(ping => ping.PingTime).ToList(),
+                        PlayersOnlineList = pings.Select(ping => ping.PlayersOnline).ToList()
+                    };
+                }));
     }
 }
