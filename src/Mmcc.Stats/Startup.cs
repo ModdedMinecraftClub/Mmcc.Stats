@@ -1,3 +1,4 @@
+using Discord.Webhook;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -28,6 +29,8 @@ namespace Mmcc.Stats
         {
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton(provider => provider.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+            services.Configure<WebhookSettings>(Configuration.GetSection(nameof(WebhookSettings)));
+            services.AddSingleton(provider => provider.GetRequiredService<IOptions<WebhookSettings>>().Value);
             
             services.Configure<ForwardedHeadersOptions>(options =>
             {
@@ -35,6 +38,11 @@ namespace Mmcc.Stats
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
+            services.AddScoped(provider =>
+            {
+                var url = provider.GetRequiredService<WebhookSettings>().WebhookUrl;
+                return new DiscordWebhookClient(url);
+            });
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IDbTableService, DbTableService>();
             services.AddScoped<IPingService, PingService>();
