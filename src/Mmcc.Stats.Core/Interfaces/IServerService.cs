@@ -7,6 +7,7 @@ namespace Mmcc.Stats.Core.Interfaces
 {
     public interface IServerService : IDisposable
     {
+        Task<Server> SelectServer(int serverId);
         Task<IEnumerable<Server>> SelectServersAsync();
         Task<IEnumerable<Server>> SelectEnabledServersAsync();
     }

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Discord;
 using Discord.Webhook;
 using Microsoft.Extensions.Logging;
 using Mmcc.Stats.Core.Interfaces;
@@ -28,9 +30,14 @@ namespace Mmcc.Stats.Infrastructure.Services
             await _webhookClient.SendMessageAsync(message);
         }
 
-        public async Task SendStaffPingMessage(string message)
+        public async Task SendStaffAlertMessage(string message)
         {
             await _webhookClient.SendMessageAsync($"<{_settings.StaffRoleId}> {message}");
+        }
+
+        public async Task SendStaffAlertEmbed(Embed embed)
+        {
+            await _webhookClient.SendMessageAsync($"<{_settings.StaffRoleId}>", embeds: new[] {embed});
         }
     }
 }

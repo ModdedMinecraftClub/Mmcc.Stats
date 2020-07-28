@@ -50,6 +50,8 @@ namespace Mmcc.Stats
             services.AddScoped<ITpsService, TpsService>();
             services.AddScoped<IPlayerbaseService, PlayerbaseService>();
             services.AddScoped<IPollerService, PollerService>();
+            services.AddScoped<IWebhookService, WebhookService>();
+            services.AddScoped<ITpsProcessingService, TpsProcessingService>();
             
             services.AddAuthentication("ClientApp")
                 .AddScheme<ClientAppAuthenticationOptions, ClientAppAuthenticationHandler>("ClientApp", null);

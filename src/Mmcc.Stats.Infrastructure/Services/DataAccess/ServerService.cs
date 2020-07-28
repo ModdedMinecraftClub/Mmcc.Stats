@@ -21,7 +21,14 @@ namespace Mmcc.Stats.Infrastructure.Services.DataAccess
             _logger = logger;
             _connection = new MySqlConnection(options.ToString());
         }
-        
+
+        public async Task<Server> SelectServer(int serverId)
+        {
+            const string sql =
+                "select serverId, serverIp, serverPort, serverName from server where serverId = @serverId;";
+            return await _connection.QuerySingleOrDefaultAsync(sql, new {serverId});
+        }
+
         public async Task<IEnumerable<Server>> SelectServersAsync()
         {
             const string sql =

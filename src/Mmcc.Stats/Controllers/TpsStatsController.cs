@@ -1,13 +1,10 @@
-﻿using System.IO;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Mmcc.Stats.Core;
 using Mmcc.Stats.Core.Interfaces;
 using Mmcc.Stats.Core.Models;
+using Mmcc.Stats.Core.Models.Dto;
 
 namespace Mmcc.Stats.Controllers
 {
@@ -16,19 +13,19 @@ namespace Mmcc.Stats.Controllers
     public class TpsStatsController
     {
         private readonly ILogger<TpsStatsController> _logger;
-        private readonly ITpsService _tpsService;
+        private readonly ITpsProcessingService _service;
         
-        public TpsStatsController(ILogger<TpsStatsController> logger, ITpsService tpsService)
+        public TpsStatsController(ILogger<TpsStatsController> logger, ITpsProcessingService service)
         {
             _logger = logger;
-            _tpsService = tpsService;
+            _service = service;
         }
         
         [Authorize(AuthenticationSchemes = "ClientApp")]
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody]TpsStat tpsStat)
+        public async Task<ActionResult> Post([FromBody]McTpsStatDto tpsStatDto)
         {
-            await _tpsService.InsertTpsStatAsync(tpsStat);
+            await _service.ProcessIncomingPostRequest(tpsStatDto);
             return new OkResult();
         }
     }
