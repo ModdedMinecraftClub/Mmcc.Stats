@@ -5,7 +5,7 @@ using Mmcc.Stats.Core.Models;
 
 namespace Mmcc.Stats.Core.Interfaces
 {
-    public interface IPingsService : IDisposable
+    public interface IPingService : IDisposable
     {
         Task<IEnumerable<Ping>> SelectPingsByServerAndDateAsync(int serverId, DateTime fromDate, DateTime toDate);
         Task InsertPingsAsync(IEnumerable<Ping> pings);

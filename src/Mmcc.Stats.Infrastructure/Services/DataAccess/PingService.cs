@@ -12,13 +12,13 @@ using MySql.Data.MySqlClient;
 
 namespace Mmcc.Stats.Infrastructure.Services.DataAccess
 {
-    public class PingsService : IPingsService
+    public class PingService : IPingService
 
     {
-    private readonly ILogger<PingsService> _logger;
+    private readonly ILogger<PingService> _logger;
     private readonly MySqlConnection _connection;
 
-    public PingsService(ILogger<PingsService> logger, IOptions<DatabaseSettings> options)
+    public PingService(ILogger<PingService> logger, IOptions<DatabaseSettings> options)
     {
         _logger = logger;
         _connection = new MySqlConnection(options.Value.ToString());

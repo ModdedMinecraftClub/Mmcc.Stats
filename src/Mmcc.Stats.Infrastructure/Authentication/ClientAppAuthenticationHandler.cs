@@ -16,18 +16,18 @@ namespace Mmcc.Stats.Infrastructure.Authentication
     
     public class ClientAppAuthenticationHandler : AuthenticationHandler<ClientAppAuthenticationOptions>
     {
-        private readonly ITokensService _tokensService;
+        private readonly ITokenService _tokenService;
 
         public ClientAppAuthenticationHandler(
             IOptionsMonitor<ClientAppAuthenticationOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
             ISystemClock clock,
-            ITokensService tokensService
+            ITokenService tokenService
             ) 
             : base(options, logger, encoder, clock)
         {
-            _tokensService = tokensService;
+            _tokenService = tokenService;
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -57,7 +57,7 @@ namespace Mmcc.Stats.Infrastructure.Authentication
 
         private async Task<AuthenticateResult> ValidateToken(string token)
         {
-            var validatedToken = await _tokensService.GetToken(token);
+            var validatedToken = await _tokenService.GetToken(token);
             
             if (validatedToken == null)
             {

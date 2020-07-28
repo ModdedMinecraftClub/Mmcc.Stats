@@ -14,14 +14,14 @@ namespace Mmcc.Stats.Infrastructure.Services
     public class PollerService : IPollerService
     {
         private readonly ILogger<PollerService> _logger;
-        private readonly IPingsService _pingsService;
-        private readonly IServersService _serversService;
+        private readonly IPingService _pingService;
+        private readonly IServerService _serverService;
 
-        public PollerService(IPingsService pingsService, ILogger<PollerService> logger, IServersService serversService)
+        public PollerService(IPingService pingService, ILogger<PollerService> logger, IServerService serverService)
         {
-            _pingsService = pingsService;
+            _pingService = pingService;
             _logger = logger;
-            _serversService = serversService;
+            _serverService = serverService;
         }
 
         public async Task PollAsync()
@@ -29,7 +29,7 @@ namespace Mmcc.Stats.Infrastructure.Services
             try
             {
                 var pings = new LinkedList<Ping>();
-                var activeServers = (await _serversService.SelectEnabledServersAsync()).ToList();
+                var activeServers = (await _serverService.SelectEnabledServersAsync()).ToList();
 
                 if (!activeServers.Any())
                 {
@@ -59,7 +59,7 @@ namespace Mmcc.Stats.Infrastructure.Services
                     }
                 }
 
-                await _pingsService.InsertPingsAsync(pings);
+                await _pingService.InsertPingsAsync(pings);
             }
             catch (Exception ex)
             {

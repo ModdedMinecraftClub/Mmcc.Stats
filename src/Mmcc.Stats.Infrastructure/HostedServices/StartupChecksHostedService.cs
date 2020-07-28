@@ -41,7 +41,7 @@ namespace Mmcc.Stats.Infrastructure.HostedServices
             _logger.LogInformation("Checking database tables...");
 
             using var scope = Services.CreateScope();
-            var scopedDb = scope.ServiceProvider.GetRequiredService<IDbTablesService>();
+            var scopedDb = scope.ServiceProvider.GetRequiredService<IDbTableService>();
 
             await CheckIfTableExistsAsync("pings");
             await CheckIfTableExistsAsync("server");

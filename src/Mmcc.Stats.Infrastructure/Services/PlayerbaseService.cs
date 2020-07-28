@@ -8,22 +8,22 @@ using Mmcc.Stats.Core.Models;
 
 namespace Mmcc.Stats.Infrastructure.Services
 {
-    public class ServersPlayerbaseService : IServersPlayerbaseService
+    public class PlayerbaseService : IPlayerbaseService
     {
-        private readonly ILogger<ServersPlayerbaseService> _logger;
-        private readonly IPingsService _pingsService;
-        private readonly IServersService _serversService;
+        private readonly ILogger<PlayerbaseService> _logger;
+        private readonly IPingService _pingService;
+        private readonly IServerService _serverService;
 
-        public ServersPlayerbaseService(ILogger<ServersPlayerbaseService> logger, IPingsService pingsService, IServersService serversService)
+        public PlayerbaseService(ILogger<PlayerbaseService> logger, IPingService pingService, IServerService serverService)
         {
             _logger = logger;
-            _pingsService = pingsService;
-            _serversService = serversService;
+            _pingService = pingService;
+            _serverService = serverService;
         }
 
         public async Task<IEnumerable<ServerPlayerbaseData>> GetByDateAsync(DateTime fromDate, DateTime toDate)
         {
-            var servers = await _serversService.SelectServersAsync();
+            var servers = await _serverService.SelectServersAsync();
             var serverPlayerbaseDataList = new List<ServerPlayerbaseData>();
 
             foreach (var server in servers)
@@ -34,7 +34,7 @@ namespace Mmcc.Stats.Infrastructure.Services
                     TimesList = new List<DateTime>(),
                     PlayersOnlineList = new List<int>()
                 };
-                var pings = await _pingsService.SelectPingsByServerAndDateAsync(server.ServerId, fromDate, toDate);
+                var pings = await _pingService.SelectPingsByServerAndDateAsync(server.ServerId, fromDate, toDate);
                 
 
                 foreach (var ping in pings)

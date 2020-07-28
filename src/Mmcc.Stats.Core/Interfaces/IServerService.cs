@@ -5,7 +5,7 @@ using Mmcc.Stats.Core.Models;
 
 namespace Mmcc.Stats.Core.Interfaces
 {
-    public interface IServersService : IDisposable
+    public interface IServerService : IDisposable
     {
         Task<IEnumerable<Server>> SelectServersAsync();
         Task<IEnumerable<Server>> SelectEnabledServersAsync();

@@ -32,12 +32,12 @@ namespace Mmcc.Stats
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
-            services.AddScoped<ITokensService, TokensService>();
-            services.AddScoped<IDbTablesService, DbTablesService>();
-            services.AddScoped<IPingsService, PingsService>();
-            services.AddScoped<IServersService, ServersService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IDbTableService, DbTableService>();
+            services.AddScoped<IPingService, PingService>();
+            services.AddScoped<IServerService, ServerService>();
             services.AddScoped<ITpsService, TpsService>();
-            services.AddScoped<IServersPlayerbaseService, ServersPlayerbaseService>();
+            services.AddScoped<IPlayerbaseService, PlayerbaseService>();
             services.AddScoped<IPollerService, PollerService>();
             
             services.AddAuthentication("ClientApp")

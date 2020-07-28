@@ -9,12 +9,12 @@ using MySql.Data.MySqlClient;
 
 namespace Mmcc.Stats.Infrastructure.Services.DataAccess
 {
-    public class DbTablesService : IDbTablesService
+    public class DbTableService : IDbTableService
     {
-        private readonly ILogger<DbTablesService> _logger;
+        private readonly ILogger<DbTableService> _logger;
         private readonly MySqlConnection _connection;
 
-        public DbTablesService(ILogger<DbTablesService> logger, IOptions<DatabaseSettings> options)
+        public DbTableService(ILogger<DbTableService> logger, IOptions<DatabaseSettings> options)
         {
             _logger = logger;
             _connection = new MySqlConnection(options.Value.ToString());

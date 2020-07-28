@@ -11,12 +11,12 @@ using MySql.Data.MySqlClient;
 
 namespace Mmcc.Stats.Infrastructure.Services.DataAccess
 {
-    public class ServersService : IServersService
+    public class ServerService : IServerService
     {
-        private readonly ILogger<ServersService> _logger;
+        private readonly ILogger<ServerService> _logger;
         private readonly MySqlConnection _connection;
 
-        public ServersService(ILogger<ServersService> logger, IOptions<DatabaseSettings> options)
+        public ServerService(ILogger<ServerService> logger, IOptions<DatabaseSettings> options)
         {
             _logger = logger;
             _connection = new MySqlConnection(options.Value.ToString());

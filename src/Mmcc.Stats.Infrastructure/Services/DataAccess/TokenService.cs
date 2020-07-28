@@ -10,12 +10,12 @@ using MySql.Data.MySqlClient;
 
 namespace Mmcc.Stats.Infrastructure.Services.DataAccess
 {
-    public class TokensService : ITokensService
+    public class TokenService : ITokenService
     {
-        private readonly ILogger<TokensService> _logger;
+        private readonly ILogger<TokenService> _logger;
         private readonly MySqlConnection _connection;
         
-        public TokensService(ILogger<TokensService> logger, IOptions<DatabaseSettings> options)
+        public TokenService(ILogger<TokenService> logger, IOptions<DatabaseSettings> options)
         {
             _logger = logger;
             _connection = new MySqlConnection(options.Value.ToString());

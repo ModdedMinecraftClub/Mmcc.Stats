@@ -5,7 +5,7 @@ using Mmcc.Stats.Core.Models;
 
 namespace Mmcc.Stats.Core.Interfaces
 {
-    public interface IServersPlayerbaseService
+    public interface IPlayerbaseService
     {
         Task<IEnumerable<ServerPlayerbaseData>> GetByDateAsync(DateTime fromDate, DateTime toDate);
     }
