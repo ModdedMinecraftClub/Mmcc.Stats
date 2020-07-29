@@ -3,17 +3,6 @@ html, body {
     width: 100%;
 }
 
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    min-width: 100%;
-}
-
-.cont {
-    flex-grow: 1;
-}
-
 .datepicker {
     border-color: #dbdbdb !important;
 }
