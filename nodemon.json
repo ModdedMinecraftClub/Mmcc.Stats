@@ -1,5 +1,5 @@
 {
-    "ext": "js, html, json, svelte",
+    "ext": "js, html, css, json, svelte",
     "ignore": [
         ".vscode/**/*.*",
         "logs/**/*.*",
