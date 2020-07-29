@@ -1,0 +1,12 @@
+{
+    "ext": "js, html, json, svelte",
+    "ignore": [
+        ".vscode/**/*.*",
+        "logs/**/*.*",
+        "out/**/*.*",
+        "src/Mmcc.Stats/**/*.*",
+        "src/Mmcc.Stats.Core/**/*.*",
+        "src/Mmcc.Stats.Infrastructure/**/*.*",
+        "src/Mmcc.Stats.Frontend/public/build/**/*.*"
+    ]
+}

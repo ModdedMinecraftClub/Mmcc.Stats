@@ -1,0 +1,1 @@
+nodemon --exec "pwsh.exe .\run.ps1" --config ./nodemon.json
