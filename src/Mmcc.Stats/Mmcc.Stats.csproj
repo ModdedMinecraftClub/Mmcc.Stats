@@ -1,5 +1,5 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk.Web" />
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
@@ -17,35 +17,18 @@
     <ProjectReference Include="..\Mmcc.Stats.Infrastructure\Mmcc.Stats.Infrastructure.csproj" />
   </ItemGroup>
   
-  <ItemGroup>
-    <Content Update="wwwroot\css\default.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    
-    <Content Update="wwwroot\css\default.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-
-    <Content Update="wwwroot\img\logo_white.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-
-    <Content Update="wwwroot\js\default.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-
-    <Content Update="wwwroot\lib\bulma.min.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\fontawesome.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\plotly-latest.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\smooth.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.Web" />
+  
+  <Target Name="BuildSvelte" BeforeTargets="Build">
+    <Message Importance="High" Text="Building Svelte" />
+    <Exec Command="cd $(SolutionDir)\Mmcc.Stats.Frontend &amp;&amp; npm run build" />
+  </Target>
+  
+  <Target Name="CopySvelte" AfterTargets="BuildSvelte" DependsOnTargets="BuildSvelte">
+    <ItemGroup>
+      <SvelteCompiled Include="$(SolutionDir)\Mmcc.Stats.Frontend\public\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(SvelteCompiled)" DestinationFiles="@(SvelteCompiled->'$(SolutionDir)\Mmcc.Stats\wwwroot\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
   
 </Project>

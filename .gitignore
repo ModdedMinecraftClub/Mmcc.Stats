@@ -13,3 +13,5 @@ obj/
 # Don't include any secrets
 appsettings.json
 appsettings.Development.json
+
+wwwroot/
