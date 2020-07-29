@@ -2,3 +2,11 @@ html, body {
     height: 100%;
     width: 100%;
 }
+
+.datepicker {
+    border-color: #dbdbdb !important;
+}
+
+.datepicker:focus {
+    border-color: #3273dc !important;
+}

@@ -1,27 +1,16 @@
 <script>
-    let playerbaseTabClass = "is-active";
-    let tpsTabClass = "";
+    import Tabs from "./Tabs.svelte"
+    import Playerbase from "./playerbase/Playerbase.svelte"
+    import Tps from "./Tps.svelte"
 
-    function handlePlayerbaseTabClick() {
-        playerbaseTabClass = "is-active";
-        tpsTabClass = "";
-    }
-
-    function handleTpsTabClick() {
-        playerbaseTabClass = "";
-        tpsTabClass = "is-active";
-    }
+    let playerbaseTabClass;
+    let tpsTabClass;
 </script>
 
-<div id="tabs" class="tabs is-centered is-boxed is-medium">
-    <ul>
-        <li class="{playerbaseTabClass}" on:click="{handlePlayerbaseTabClick}"><a>Playerbase statistics</a></li>
-        <li class="{tpsTabClass}" on:click="{handleTpsTabClick}"><a>TPS Statistics</a></li>
-    </ul>
-</div>
+<Tabs bind:playerbaseTabClass={playerbaseTabClass} bind:tpsTabClass={tpsTabClass}/>
 
-<style>
-    #tabs {
-        margin-top: 2%
-    }
-</style>
+{#if playerbaseTabClass === "is-active"}
+    <Playerbase/>
+{:else}
+    <Tps/>
+{/if}
