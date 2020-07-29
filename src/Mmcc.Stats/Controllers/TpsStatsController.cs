@@ -24,12 +24,20 @@ namespace Mmcc.Stats.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ServerTpsData>>> Get()
+        public async Task<ActionResult<IEnumerable<ServerTpsData>>> Get(DateTime from, DateTime to)
         {
-            var now = DateTime.UtcNow;
-            var then = DateTime.UtcNow.AddDays(-20);
-            var result = await _service.GetByDateAsync(then, now);
-            return Ok(result);
+            if (from > to)
+            {
+                return BadRequest();
+            }
+            
+            if (from == to)
+            {
+                to = to.AddDays(1);
+            }
+
+            var data = await _service.GetByDateAsync(from, to);
+            return Ok(data);
         }
         
         [Authorize(AuthenticationSchemes = "ClientApp")]
