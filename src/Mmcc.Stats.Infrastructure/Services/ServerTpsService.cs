@@ -24,7 +24,7 @@ namespace Mmcc.Stats.Infrastructure.Services
         public ServerTpsService(
             ILogger<ServerTpsService> logger,
             ITpsService tpsService,
-            IWebhookService webhookService, 
+            IWebhookService webhookService,
             WebhookSettings settings,
             IServerService serverService
             )
