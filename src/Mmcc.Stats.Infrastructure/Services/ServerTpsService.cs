@@ -37,7 +37,7 @@ namespace Mmcc.Stats.Infrastructure.Services
         }
 
         public async Task<IEnumerable<ServerTpsData>> GetByDateAsync(DateTime fromDate, DateTime toDate)
-            => await Task.WhenAll((await _serverService.SelectServersAsync())
+            => (await Task.WhenAll((await _serverService.SelectServersAsync())
                 .GroupBy(x => x.ServerId)
                 .Select(async y =>
                 {
@@ -51,7 +51,8 @@ namespace Mmcc.Stats.Infrastructure.Services
                             Tps = stat.Tps
                         })
                     };
-                }));
+                })))
+                .Where(data => data.TpsStats.Any());
 
         public async Task ProcessIncomingTps(McTpsStatDto tpsStatDto)
         {

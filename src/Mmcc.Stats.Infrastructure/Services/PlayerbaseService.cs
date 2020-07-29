@@ -27,7 +27,7 @@ namespace Mmcc.Stats.Infrastructure.Services
         }
 
         public async Task<IEnumerable<ServerPlayerbaseData>> GetByDateAsync(DateTime fromDate, DateTime toDate)
-            => await Task.WhenAll((await _serverService.SelectServersAsync())
+            => (await Task.WhenAll((await _serverService.SelectServersAsync())
                 .GroupBy(x => x.ServerId)
                 .Select(async y =>
                 {
@@ -41,6 +41,7 @@ namespace Mmcc.Stats.Infrastructure.Services
                             Time = ping.PingTime
                         })
                     };
-                }));
+                })))
+                .Where(data => data.Pings.Any());
     }
 }
