@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TraceLd.DiscordWebhook" Version="1.0.3" />
+    <PackageReference Include="TraceLd.DiscordWebhook" Version="1.0.4" />
   </ItemGroup>
 
 </Project>
