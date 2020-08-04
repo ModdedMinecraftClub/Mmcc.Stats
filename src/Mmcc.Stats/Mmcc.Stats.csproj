@@ -23,14 +23,14 @@
   
   <Target Name="BuildSvelte" BeforeTargets="Build">
     <Message Importance="High" Text="Building Svelte" />
-    <Exec Command="cd $(SolutionDir)\Mmcc.Stats.Frontend &amp;&amp; npm run build" />
+    <Exec Command="cd $(ProjectDir)..\Mmcc.Stats.Frontend &amp;&amp; npm run build" />
   </Target>
   
   <Target Name="CopySvelte" AfterTargets="BuildSvelte" DependsOnTargets="BuildSvelte">
     <ItemGroup>
-      <SvelteCompiled Include="$(SolutionDir)\Mmcc.Stats.Frontend\public\**\*.*" />
+      <SvelteCompiled Include="$(ProjectDir)..\Mmcc.Stats.Frontend\public\**\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(SvelteCompiled)" DestinationFiles="@(SvelteCompiled->'$(SolutionDir)\Mmcc.Stats\wwwroot\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(SvelteCompiled)" DestinationFiles="@(SvelteCompiled->'$(ProjectDir)..\Mmcc.Stats\wwwroot\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
   
 </Project>
