@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0-preview.7.20364.11" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0-preview.7.20364.11" />
     <PackageReference Include="MySql.Data" Version="8.0.21" />
-    <PackageReference Include="TraceLd.DiscordWebhook" Version="1.0.1" />
+    <PackageReference Include="TraceLd.DiscordWebhook" Version="1.0.3" />
     <PackageReference Include="TraceLd.MineStatSharp" Version="1.0.0" />
   </ItemGroup>
 
