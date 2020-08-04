@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Discord;
 using Microsoft.Extensions.Logging;
 using Mmcc.Stats.Core;
 using Mmcc.Stats.Core.Interfaces;
 using Mmcc.Stats.Core.Models;
 using Mmcc.Stats.Core.Models.Dto;
-using Mmcc.Stats.Core.Models.Settings;
 using Mmcc.Stats.Infrastructure.Extensions;
+using TraceLd.DiscordWebhook;
+using TraceLd.DiscordWebhook.Models;
 
 namespace Mmcc.Stats.Infrastructure.Services
 {
@@ -18,14 +18,14 @@ namespace Mmcc.Stats.Infrastructure.Services
         private readonly ILogger<ServerTpsService> _logger;
         private readonly ITpsService _tpsService;
         private readonly IWebhookService _webhookService;
-        private readonly WebhookSettings _settings;
+        private readonly TpsPingSettings _settings;
         private readonly IServerService _serverService;
 
         public ServerTpsService(
             ILogger<ServerTpsService> logger,
             ITpsService tpsService,
             IWebhookService webhookService,
-            WebhookSettings settings,
+            TpsPingSettings settings,
             IServerService serverService
             )
         {
@@ -67,18 +67,22 @@ namespace Mmcc.Stats.Infrastructure.Services
                 {
                     throw new ServerNotFoundException($"Server with ID {tpsStat.ServerId} not found in the database.");
                 }
-
-                var embed = new EmbedBuilder()
-                    .WithTitle($"TPS of the following server has dropped below {_settings.TpsToAlertAt}")
-                    .WithColor(Color.Red)
-                    .WithThumbnailUrl("https://www.moddedminecraft.club/data/icon.png")
-                    .AddField("Server details", $"Server name: {server.ServerName}\nServer ID: {server.ServerId}")
-                    .AddField("Average TPS over the last 10 minutes", $"{tpsStat.Tps:0.00}")
-                    .WithCurrentTimestamp();
+                
+                var embed = new Embed
+                {
+                    Title = $"TPS of the following server has dropped below {_settings.TpsToAlertAt}",
+                    Color = 15158332,
+                    Thumbnail = new UrlEntity("https://www.moddedminecraft.club/data/icon.png"),
+                    Fields = new List<Field>
+                    {
+                        new Field("Server details", $"Server name: {server.ServerName}\nServer ID: {server.ServerId}"),
+                        new Field("Average TPS over the last 10 minutes", $"{tpsStat.Tps:0.00}")
+                    }
+                };
 
                 try
                 {
-                    await _webhookService.SendStaffAlertEmbed(embed.Build());
+                    await _webhookService.ExecuteWebhookAsync($"<@&{_settings.StaffRoleId}>", embed);
                 }
                 catch (Exception e)
                 {
