@@ -5,6 +5,7 @@
     let from;
     let to;
     let selectedMode;
+    let loading = false;
 
     let modes = [
         { id: 0, text: "Smoothed data" },
@@ -13,6 +14,9 @@
     ]
 
     async function handleClick() {
+        document.getElementById("plot").innerHTML = "";
+        loading = true;
+
         if (from === '' || to === '' || from === undefined || to === undefined) {
             alert("Date cannot be empty");
             return;
@@ -32,47 +36,49 @@
 
         let responseData = await response.json();
 
-        createPlot(responseData);
+        await createPlot(responseData);
     }
 
-    function createPlot(data) {
+    async function createPlot(data) {
         let traces = [];
     
         for (const serverData of data) {
-            let parallelArrays = createParallelArrays(serverData.pings);
+            let parallelArrays = await createParallelArrays(serverData.pings);
 
             if (selectedMode.id == 0) {
-                traces.push(createSmoothTrace(serverData.serverName, parallelArrays));
+                traces.push(await createSmoothTrace(serverData.serverName, parallelArrays));
             } else if (selectedMode.id == 1) {
-                traces.push(createWeeklyTrace(serverData.serverName, parallelArrays));
+                traces.push(await createWeeklyTrace(serverData.serverName, parallelArrays));
             } else {
-                traces.push(createRawTrace(serverData.serverName, parallelArrays));
+                traces.push(await createRawTrace(serverData.serverName, parallelArrays));
             }
         }
 
         let layout = {
             autosize: true // set autosize to rescale
         };    
-        let config = {responsive: true}
+        let config = {responsive: true};
 
-        Plotly.newPlot('plot', traces, layout, config);    
+        loading = false;
+
+        setTimeout(() => {  Plotly.newPlot("plot", traces, layout, config); }, 400);    
     }
 
-    function createWeeklyTrace(name, parallelArrays) {
+    async function createWeeklyTrace(name, parallelArrays) {
         return {
             name: name,
             x: parallelArrays.times,
-            y: movingAvg(parallelArrays.players, 966, function(val){ return val != 0; }),
+            y: await smooth(parallelArrays.players, 966),
             mode: 'lines',
             type: 'scatter'
         }
     }
 
-    function createSmoothTrace(name, parallelArrays) {
+    async function createSmoothTrace(name, parallelArrays) {
         return {
             name: name,
             x: parallelArrays.times,
-            y: smooth(parallelArrays.players, 30),
+            y: await smooth(parallelArrays.players, 30),
             mode: 'lines',
             type: 'scatter'
         }
@@ -171,6 +177,13 @@
         </p>
     </div>        
 </form>
+
+{#if loading}
+    <div id="loading" transition:fade wmode="transparent">
+        <p>Loading...</p>
+    </div>
+{/if}
+
 <div id="plot" transition:fade></div>
 
 <style>
@@ -180,6 +193,11 @@
         justify-content: center;
         max-width: 100%;
         max-height: 100%;
+    }
+
+    #loading {
+        text-align: center;
+        margin-top: 8%;
     }
 
     #plot {
