@@ -7,6 +7,7 @@ namespace Mmcc.Stats.Core.Models
     public class ServerPlayerbaseData
     {
         public string ServerName { get; set; }
-        public IEnumerable<PingDto> Pings { get; set; }
+        public IEnumerable<DateTime> Times { get; set; }
+        public IEnumerable<double> Players { get; set; }
     }
 }

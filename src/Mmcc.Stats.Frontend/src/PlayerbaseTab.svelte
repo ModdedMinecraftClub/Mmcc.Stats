@@ -8,9 +8,9 @@
     let loading = false;
 
     let modes = [
-        { id: 0, text: "Smoothed data" },
+        { id: 0, text: "Daily rolling average" },
         { id: 1, text: "Weekly rolling average" },
-        { id: 2, text: "Raw data" }
+        { id: 2, text: "Raw data"}
     ]
 
     async function handleClick() {
@@ -27,7 +27,17 @@
             return;
         }
 
-        let response = await fetch(`/api/playerbase-stats?from=${from}&to=${to}`);
+        let response;
+
+        if (selectedMode.id == 0) {
+            response = await fetch(`/api/playerbase-stats/avg?from=${from}&to=${to}&windowSize=138`);
+        } else if (selectedMode.id == 1) {
+            response = await fetch(`/api/playerbase-stats/avg?from=${from}&to=${to}&windowSize=966`);
+        } else if (selectedMode.id == 2) {
+            response = await fetch(`/api/playerbase-stats?from=${from}&to=${to}`);
+        } else {
+            throw new RangeError("selectedMode out of range");
+        }
 
         if (!response.ok) {
             alert("API HTTP-Error" + response.status);
@@ -43,15 +53,7 @@
         let traces = [];
     
         for (const serverData of data) {
-            let parallelArrays = await createParallelArrays(serverData.pings);
-
-            if (selectedMode.id == 0) {
-                traces.push(await createSmoothTrace(serverData.serverName, parallelArrays));
-            } else if (selectedMode.id == 1) {
-                traces.push(await createWeeklyTrace(serverData.serverName, parallelArrays));
-            } else {
-                traces.push(await createRawTrace(serverData.serverName, parallelArrays));
-            }
+            traces.push(createRawTrace(serverData));
         }
 
         let layout = {
@@ -64,85 +66,14 @@
         setTimeout(() => {  Plotly.newPlot("plot", traces, layout, config); }, 400);    
     }
 
-    async function createWeeklyTrace(name, parallelArrays) {
+    function createRawTrace(data) {
         return {
-            name: name,
-            x: parallelArrays.times,
-            y: await smooth(parallelArrays.players, 966),
-            mode: 'lines',
-            type: 'scatter'
-        }
-    }
-
-    async function createSmoothTrace(name, parallelArrays) {
-        return {
-            name: name,
-            x: parallelArrays.times,
-            y: await smooth(parallelArrays.players, 30),
-            mode: 'lines',
-            type: 'scatter'
-        }
-    }
-
-    function createRawTrace(name, parallelArrays) {
-        return {
-            name: name,
-            x: parallelArrays.times,
-            y: parallelArrays.players,
+            name: data.serverName,
+            x: data.times,
+            y: data.players,
             mode: 'lines',
             type: 'scatter'
         };
-    }
-
-    function createParallelArrays(pings) {
-        let times = [];
-        let players = [];
-
-        for (const ping of pings) {
-            times.push(ping.time);
-            players.push(ping.playersOnline);
-        }
-
-        return {
-            times,
-            players
-        }
-    }
-
-    function movingAvg(array, count, qualifier) {
-
-        // calculate average for subarray
-        var avg = function(array, qualifier) {
-
-            var sum = 0, count = 0, val;
-            for (var i in array){
-                val = array[i];
-                if (!qualifier || qualifier(val)) {
-                    sum += val;
-                    count++;
-                }
-            }
-
-            return sum / count;
-        };
-
-        var result = [], val;
-
-        // pad beginning of result with null values
-        for (var i=0; i < count-1; i++)
-            result.push(null);
-
-        // calculate average for each subarray and add to result
-        for (var i=0, len=array.length - count; i <= len; i++) {
-
-            val = avg(array.slice(i, i + count), qualifier);
-            if (isNaN(val))
-                result.push(null);
-            else
-                result.push(val);
-        }
-
-        return result;
     }
 
 </script>
