@@ -5,13 +5,18 @@
     let from;
     let to;
     let selectedMode;
+    let loading = false;
 
     let modes = [
-        { id: 0, text: "Smoothed data" },
-        { id: 1, text: "Raw data" }
+        { id: 0, text: "Daily rolling average" },
+        { id: 1, text: "Weekly rolling average" },
+        { id: 2, text: "Raw data"}
     ]
 
     async function handleClick() {
+        document.getElementById("plot").innerHTML = "";
+        loading = true;
+
         if (from === '' || to === '' || from === undefined || to === undefined) {
             alert("Date cannot be empty");
             return;
@@ -22,7 +27,17 @@
             return;
         }
 
-        let response = await fetch(`/api/playerbase-stats?from=${from}&to=${to}`);
+        let response;
+
+        if (selectedMode.id == 0) {
+            response = await fetch(`/api/playerbase-stats/avg?from=${from}&to=${to}&windowSize=138`);
+        } else if (selectedMode.id == 1) {
+            response = await fetch(`/api/playerbase-stats/avg?from=${from}&to=${to}&windowSize=966`);
+        } else if (selectedMode.id == 2) {
+            response = await fetch(`/api/playerbase-stats?from=${from}&to=${to}`);
+        } else {
+            throw new RangeError("selectedMode out of range");
+        }
 
         if (!response.ok) {
             alert("API HTTP-Error" + response.status);
@@ -31,64 +46,36 @@
 
         let responseData = await response.json();
 
-        createPlot(responseData);
+        await createPlot(responseData);
     }
 
-    function createPlot(data) {
+    async function createPlot(data) {
         let traces = [];
     
         for (const serverData of data) {
-            let parallelArrays = createParallelArrays(serverData.pings);
-
-            if (selectedMode.id == 0) {
-                traces.push(createSmoothTrace(serverData.serverName, parallelArrays));
-            } else {
-                traces.push(createRawTrace(serverData.serverName, parallelArrays));
-            }
+            traces.push(createRawTrace(serverData));
         }
 
         let layout = {
             autosize: true // set autosize to rescale
         };    
-        let config = {responsive: true}
+        let config = {responsive: true};
 
-        Plotly.newPlot('plot', traces, layout, config);    
+        loading = false;
+
+        setTimeout(() => {  Plotly.newPlot("plot", traces, layout, config); }, 400);    
     }
 
-    function createSmoothTrace(name, parallelArrays) {
+    function createRawTrace(data) {
         return {
-            name: name,
-            x: parallelArrays.times,
-            y: smooth(parallelArrays.players, 30),
-            mode: 'lines',
-            type: 'scatter'
-        }
-    }
-
-    function createRawTrace(name, parallelArrays) {
-        return {
-            name: name,
-            x: parallelArrays.times,
-            y: parallelArrays.players,
+            name: data.serverName,
+            x: data.times,
+            y: data.players,
             mode: 'lines',
             type: 'scatter'
         };
     }
 
-    function createParallelArrays(pings) {
-        let times = [];
-        let players = [];
-
-        for (const ping of pings) {
-            times.push(ping.time);
-            players.push(ping.playersOnline);
-        }
-
-        return {
-            times,
-            players
-        }
-    }
 </script>
 
 <form>
@@ -121,6 +108,13 @@
         </p>
     </div>        
 </form>
+
+{#if loading}
+    <div id="loading" transition:fade wmode="transparent">
+        <p>Loading...</p>
+    </div>
+{/if}
+
 <div id="plot" transition:fade></div>
 
 <style>
@@ -130,6 +124,11 @@
         justify-content: center;
         max-width: 100%;
         max-height: 100%;
+    }
+
+    #loading {
+        text-align: center;
+        margin-top: 8%;
     }
 
     #plot {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MathNet.Numerics.Statistics;
 using Microsoft.Extensions.Logging;
 using Mmcc.Stats.Core.Interfaces;
 using Mmcc.Stats.Core.Models;
-using Mmcc.Stats.Core.Models.Dto;
 
 namespace Mmcc.Stats.Infrastructure.Services
 {
@@ -24,21 +24,33 @@ namespace Mmcc.Stats.Infrastructure.Services
         }
 
         public async Task<IEnumerable<ServerPlayerbaseData>> GetByDateAsync(DateTime fromDate, DateTime toDate)
-            => (await Task.WhenAll((await _serverService.SelectServersAsync())
-                .GroupBy(x => x.ServerId)
-                .Select(async y =>
+            => (await _pingService.SelectPingsByDateAsync(fromDate, toDate))
+                .GroupBy(ping => ping.ServerId)
+                .Select(serverPing => new ServerPlayerbaseData
                 {
-                    var pings = await _pingService.SelectPingsByServerAndDateAsync(y.Key, fromDate, toDate);
-                    return new ServerPlayerbaseData
-                    {
-                        ServerName = y.First().ServerName,
-                        Pings = pings.Select(ping => new PingDto
-                        {
-                            PlayersOnline = ping.PlayersOnline,
-                            Time = ping.PingTime
-                        })
-                    };
-                })))
-                .Where(data => data.Pings.Any());
+                    ServerName = serverPing.First().ServerName,
+                    Times = serverPing.Select(x => x.PingTime),
+                    Players = serverPing.Select(x => (double) x.PlayersOnline)
+                });
+
+        public async Task<IEnumerable<ServerPlayerbaseData>> GetByDateAsRollingAvgAsync(
+            DateTime fromDate, DateTime toDate, int windowSize)
+        {
+            var input = (await GetByDateAsync(fromDate, toDate)).ToList();
+            var output = new List<ServerPlayerbaseData>();
+            
+            foreach (var server in input)
+            {
+                var serverNew = new ServerPlayerbaseData
+                {
+                    ServerName = server.ServerName,
+                    Players = server.Players.MovingAverage(windowSize),
+                    Times = server.Times
+                };
+                output.Add(serverNew);
+            }
+
+            return output;
+        }
     }
 }

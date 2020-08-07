@@ -1,5 +1,4 @@
 <script>
-	import { fade } from 'svelte/transition';
 	import Navbar from "./Navbar.svelte"
 	import Footer from "./Footer.svelte"
 	import Stats from "./Stats.svelte"

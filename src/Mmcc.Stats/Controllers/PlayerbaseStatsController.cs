@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Mmcc.Stats.Core;
 using Mmcc.Stats.Core.Interfaces;
 using Mmcc.Stats.Core.Models;
-using Mmcc.Stats.Infrastructure.Services;
 
 namespace Mmcc.Stats.Controllers
 {
@@ -32,16 +30,32 @@ namespace Mmcc.Stats.Controllers
         {
             if (from > to)
             {
-                return BadRequest();
+                return BadRequest("Parameter 'from' can not be bigger than parameter 'to'.");
             }
 
             if (from == to)
             {
                 to = to.AddDays(1);
             }
-
+            
             var data = await _playerbaseService.GetByDateAsync(from, to);
+            return Ok(data);
+        }
 
+        [HttpGet("avg")]
+        public async Task<ActionResult<IEnumerable<ServerPlayerbaseData>>> GetAvg(DateTime from, DateTime to, int windowSize)
+        {
+            if (from > to)
+            {
+                return BadRequest("Parameter 'from' can not be bigger than parameter 'to'.");
+            }
+
+            if (from == to)
+            {
+                to = to.AddDays(1);
+            }
+            
+            var data = await _playerbaseService.GetByDateAsRollingAvgAsync(from, to, windowSize);
             return Ok(data);
         }
     }
