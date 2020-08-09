@@ -9,6 +9,6 @@ namespace Mmcc.Stats.Core.Interfaces
     public interface IServerTpsService
     {
         Task<IEnumerable<ServerTpsData>> GetByDateAsync(DateTime fromDate, DateTime toDate);
-        Task ProcessIncomingTps(McTpsStatDto tpsStat);
+        Task HandleIncomingMcTps(McTpsStatDto tpsStat);
     }
 }

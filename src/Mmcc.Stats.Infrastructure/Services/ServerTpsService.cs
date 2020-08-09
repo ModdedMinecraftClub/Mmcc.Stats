@@ -35,7 +35,7 @@ namespace Mmcc.Stats.Infrastructure.Services
             _settings = settings;
             _serverService = serverService;
         }
-
+        
         public async Task<IEnumerable<ServerTpsData>> GetByDateAsync(DateTime fromDate, DateTime toDate)
             => (await Task.WhenAll((await _serverService.SelectServersAsync())
                 .GroupBy(x => x.ServerId)
@@ -53,8 +53,14 @@ namespace Mmcc.Stats.Infrastructure.Services
                     };
                 })))
                 .Where(data => data.TpsStats.Any());
-
-        public async Task ProcessIncomingTps(McTpsStatDto tpsStatDto)
+        
+        /// <summary>
+        /// Handles a TPS statistic coming from a Minecraft server.
+        /// </summary>
+        /// <param name="tpsStatDto">A TPS statistic DTO that came from a Minecraft server</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation</returns>
+        /// <exception cref="ServerNotFoundException">Throws a ServerNotFoundException if server is not found in the database</exception>
+        public async Task HandleIncomingMcTps(McTpsStatDto tpsStatDto)
         {
             // convert from dto to model;
             var tpsStat = tpsStatDto.AsTpsStat();

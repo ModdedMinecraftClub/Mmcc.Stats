@@ -44,7 +44,7 @@ namespace Mmcc.Stats.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody]McTpsStatDto tpsStatDto)
         {
-            await _service.ProcessIncomingTps(tpsStatDto);
+            await _service.HandleIncomingMcTps(tpsStatDto);
             return Ok();
         }
     }
