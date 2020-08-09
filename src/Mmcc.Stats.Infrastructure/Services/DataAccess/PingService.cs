@@ -4,13 +4,11 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Mmcc.Stats.Core;
 using Mmcc.Stats.Core.Interfaces;
 using Mmcc.Stats.Core.Models;
 using Mmcc.Stats.Core.Models.Dto;
 using Mmcc.Stats.Core.Models.Settings;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 
 namespace Mmcc.Stats.Infrastructure.Services.DataAccess
 {
@@ -39,6 +37,7 @@ namespace Mmcc.Stats.Infrastructure.Services.DataAccess
                 fromDate,
                 toDate
             };
+            
             return await _connection.QueryAsync<ServerPingDto>(sql, payload);
         }
 

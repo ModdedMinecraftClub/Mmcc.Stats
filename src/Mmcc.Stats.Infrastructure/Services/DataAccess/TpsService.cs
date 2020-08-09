@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using Mmcc.Stats.Core.Interfaces;
 using Mmcc.Stats.Core.Models;
 using Mmcc.Stats.Core.Models.Settings;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 
 namespace Mmcc.Stats.Infrastructure.Services.DataAccess
 {
