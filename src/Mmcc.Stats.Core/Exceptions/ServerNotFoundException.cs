@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mmcc.Stats.Core
+namespace Mmcc.Stats.Core.Exceptions
 {
     public class ServerNotFoundException : Exception
     {
