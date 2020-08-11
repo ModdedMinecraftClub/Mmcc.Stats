@@ -1,11 +1,13 @@
 ﻿using System;
 
-namespace Mmcc.Stats.Core.Models
+namespace Mmcc.Stats.Core.Data.Models
 {
     public class TpsStat
     {
         public int ServerId { get; set; }
         public DateTime StatTime { get; set; }
-        public double Tps { get; set; }
+        public double? Tps { get; set; }
+
+        public virtual Server Server { get; set; }
     }
 }

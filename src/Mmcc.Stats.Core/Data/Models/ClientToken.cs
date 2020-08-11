@@ -1,6 +1,6 @@
-﻿namespace Mmcc.Stats.Core.Models
+﻿namespace Mmcc.Stats.Core.Data.Models
 {
-    public class Token
+    public class ClientToken
     {
         public int Id { get; set; }
         public string Value { get; set; }

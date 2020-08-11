@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Mmcc.Stats.Core.Data;
+using Mmcc.Stats.Core.Data.Models;
 using Mmcc.Stats.Core.Interfaces;
-using Mmcc.Stats.Core.Models;
-using MySqlConnector;
 using TraceLd.MineStatSharp;
 
 namespace Mmcc.Stats.Infrastructure.Services
@@ -16,75 +17,59 @@ namespace Mmcc.Stats.Infrastructure.Services
     public class PollerService : IPollerService
     {
         private readonly ILogger<PollerService> _logger;
-        private readonly IPingService _pingService;
-        private readonly IServerService _serverService;
-        
+        private readonly PollerContext _context;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="PollerService"/> class.
+        /// <inheritdoc cref="IPollerService"/>
         /// </summary>
-        /// <param name="pingService">Ping service</param>
         /// <param name="logger">Logger</param>
-        /// <param name="serverService">Server service</param>
-        public PollerService(IPingService pingService, ILogger<PollerService> logger, IServerService serverService)
+        /// <param name="context">Poller database context</param>
+        public PollerService(ILogger<PollerService> logger, PollerContext context)
         {
-            _pingService = pingService;
             _logger = logger;
-            _serverService = serverService;
+            _context = context;
         }
-        
+
         /// <summary>
         /// Polls all active MC servers for playerbase statistics.
         /// </summary>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation</returns>
         public async Task PollAsync()
         {
-            try
+            var pings = new LinkedList<Ping>();
+            var activeServers = _context.Servers.AsNoTracking()
+                .Where(server => server.Enabled);
+
+            if (!activeServers.Any())
             {
-                var pings = new LinkedList<Ping>();
-                var activeServers = (await _serverService.SelectEnabledServersAsync()).ToList();
-
-                if (!activeServers.Any())
-                {
-                    _logger.LogWarning("Poller: No active servers detected.");
-                }
-
-                foreach (var activeServer in activeServers)
-                {
-                    var ms = new MineStat(activeServer.ServerIp, (ushort) activeServer.ServerPort);
-
-                    if (ms.ServerUp)
-                    {
-                        var ping = new Ping
-                        {
-                            ServerId = activeServer.ServerId,
-                            PingTime = DateTime.Now,
-                            PlayersOnline = int.Parse(ms.CurrentPlayers),
-                            PlayersMax = int.Parse(ms.MaximumPlayers)
-                        };
-                        
-                        pings.AddFirst(ping);
-                    }
-                    else
-                    {
-                        _logger.LogWarning(
-                            $"Poller: Server {activeServer.ServerId} with IP address {activeServer.ServerIp}:{activeServer.ServerPort} is down.");
-                    }
-                }
-
-                await _pingService.InsertPingsAsync(pings);
+                _logger.LogWarning($"[{nameof(PollerService)}] No active servers detected.");
             }
-            catch (Exception ex)
+
+            foreach (var activeServer in activeServers)
             {
-                switch (ex)
+                var ms = new MineStat(activeServer.ServerIp, (ushort) activeServer.ServerPort);
+
+                if (ms.ServerUp)
                 {
-                    case MySqlException _:
-                        _logger.LogCritical(ex, ex.Message);
-                        break;
-                    default:
-                        _logger.LogError(ex, $"Poller: {ex.Message}");
-                        break;
+                    var ping = new Ping
+                    {
+                        ServerId = activeServer.ServerId,
+                        PingTime = DateTime.Now,
+                        PlayersOnline = int.Parse(ms.CurrentPlayers),
+                        PlayersMax = int.Parse(ms.MaximumPlayers)
+                    };
+
+                    pings.AddFirst(ping);
+                }
+                else
+                {
+                    _logger.LogWarning(
+                        $"Poller: Server {activeServer.ServerId} with IP address {activeServer.ServerIp}:{activeServer.ServerPort} is down.");
                 }
             }
+
+            await _context.Pings.AddRangeAsync(pings);
+            await _context.SaveChangesAsync();
         }
     }
 }

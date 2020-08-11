@@ -1,4 +1,4 @@
-﻿namespace Mmcc.Stats.Core.Models.Settings
+﻿namespace Mmcc.Stats.Core.Data.Models.Settings
 {
     public class DatabaseSettings
     {

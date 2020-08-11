@@ -1,4 +1,4 @@
-﻿namespace Mmcc.Stats.Core.Models
+﻿namespace Mmcc.Stats.Core.Data.Models
 {
     public class Server
     {
@@ -6,5 +6,6 @@
         public string ServerIp { get; set; }
         public int ServerPort { get; set; }
         public string ServerName { get; set; }
+        public bool Enabled { get; set; }
     }
 }

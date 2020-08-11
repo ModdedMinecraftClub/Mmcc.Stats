@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Mmcc.Stats.Core.Models.Dto;
 
-namespace Mmcc.Stats.Core.Models
+namespace Mmcc.Stats.Core.Data.Dtos
 {
-    public class ServerPlayerbaseData
+    public class ServerChartDataDto
     {
         public string ServerName { get; set; }
         public IEnumerable<DateTime> Times { get; set; }
