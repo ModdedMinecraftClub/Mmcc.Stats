@@ -30,11 +30,12 @@
         let response;
 
         if (selectedMode.id == 0) {
-            response = await fetch(`/api/playerbase-stats/avg?from=${from}&to=${to}&windowSize=138`);
+
+            response = await fetch(`/api/playerbase/chart/avg?from=${from}&to=${to}&windowSize=138`);
         } else if (selectedMode.id == 1) {
-            response = await fetch(`/api/playerbase-stats/avg?from=${from}&to=${to}&windowSize=966`);
+            response = await fetch(`/api/playerbase/chart/avg?from=${from}&to=${to}&windowSize=966`);
         } else if (selectedMode.id == 2) {
-            response = await fetch(`/api/playerbase-stats?from=${from}&to=${to}`);
+            response = await fetch(`/api/playerbase/chart?from=${from}&to=${to}`);
         } else {
             throw new RangeError("selectedMode out of range");
         }

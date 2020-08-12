@@ -1,17 +1,21 @@
+using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Mmcc.Stats.Core.Data;
+using Mmcc.Stats.Core.Data.Models.Settings;
 using Mmcc.Stats.Core.Interfaces;
-using Mmcc.Stats.Core.Models;
-using Mmcc.Stats.Core.Models.Settings;
 using Mmcc.Stats.Infrastructure.Authentication;
+using Mmcc.Stats.Infrastructure.Authentication.ClientAppAuthentication;
+using Mmcc.Stats.Infrastructure.Commands;
 using Mmcc.Stats.Infrastructure.HostedServices;
 using Mmcc.Stats.Infrastructure.Services;
-using Mmcc.Stats.Infrastructure.Services.DataAccess;
 using TraceLd.DiscordWebhook;
 using TraceLd.DiscordWebhook.Models;
 
@@ -43,26 +47,30 @@ namespace Mmcc.Stats
             services.AddSingleton(provider => provider.GetRequiredService<IOptions<TpsPingSettings>>().Value);
 
             services.AddHttpClient<IWebhookService, WebhookService>();
-            
-            // Register data access services
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IDbTableService, DbTableService>();
-            services.AddScoped<IPingService, PingService>();
-            services.AddScoped<IServerService, ServerService>();
-            services.AddScoped<ITpsService, TpsService>();
 
-            services.AddScoped<IPlayerbaseService, PlayerbaseService>();
+            services.AddDbContext<PollerContext>((provider, builder) =>
+                {
+                    var dbConfig = provider.GetRequiredService<DatabaseSettings>();
+                    builder.UseMySql(
+                        $"server={dbConfig.Server};database={dbConfig.DatabaseName};uid={dbConfig.Username};pwd={dbConfig.Password}");
+                });
+
+            services.AddMediatR(typeof(Startup), typeof(NotifyStaffAboutTps));
+
             services.AddScoped<IPollerService, PollerService>();
-            services.AddScoped<IServerTpsService, ServerTpsService>();
             
+            services.AddHostedService<PollerTimedHostedService>();
+
             services.AddAuthentication("ClientApp")
                 .AddScheme<ClientAppAuthenticationOptions, ClientAppAuthenticationHandler>("ClientApp", null);
             services.AddAntiforgery(options => options.HeaderName = "X-Auth-Token");
             
-            services.AddHostedService<StartupChecksHostedService>();
-            services.AddHostedService<PollerTimedHostedService>();
-            
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(configuration =>
+                {
+                    configuration.RegisterValidatorsFromAssemblyContaining<Startup>();
+                    configuration.ImplicitlyValidateChildProperties = true;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
