@@ -9,6 +9,7 @@ using Mmcc.Stats.Core.Data.Models;
 namespace Mmcc.Stats.Features.Tps
 {
     [ApiController]
+    [Route("/api/tps")]
     public class TpsController : ControllerBase
     {
         private readonly ILogger<TpsController> _logger;
