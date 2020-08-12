@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,7 +16,7 @@ namespace Mmcc.Stats.Features.PlayerbaseChartData
         private readonly IMediator _mediator;
         public PlayerbaseChartDataController(
             ILogger<PlayerbaseChartDataController> logger,
-            IMediator mediator, IEnumerable<IValidator<Get.Query>> validators)
+            IMediator mediator)
         {
             _logger = logger;
             _mediator = mediator;
