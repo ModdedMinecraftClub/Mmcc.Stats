@@ -31,9 +31,8 @@ namespace Mmcc.Stats.Features.PlayerbaseChartData
         }
 
         [HttpGet("avg")]
-        public async Task<ActionResult<IEnumerable<ServerPlayerbaseChartData>>> GetAvg(DateTime from, DateTime to, int windowSize)
+        public async Task<ActionResult<IEnumerable<ServerPlayerbaseChartData>>> GetAvg([FromQuery] GetAvg.Query query)
         {
-            var query = new GetAvg.Query{FromDateTime = from, ToDateTime = to, WindowSize = windowSize};
             var result = await _mediator.Send(query);
             return Ok(result.ServerAvgChartDataDtos);
         }
