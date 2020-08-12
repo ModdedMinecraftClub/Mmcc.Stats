@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Mmcc.Stats.Core.Data.Dtos
 {
-    public class ServerChartDataDto
+    public class ServerTpsChartData
     {
         public string ServerName { get; set; }
         public IEnumerable<DateTime> Times { get; set; }
-        public IEnumerable<double> Players { get; set; }
+        public IEnumerable<double> Tps { get; set; }
     }
 }

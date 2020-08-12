@@ -8,7 +8,7 @@ using MathNet.Numerics.Statistics;
 using MediatR;
 using Mmcc.Stats.Core.Data.Dtos;
 
-namespace Mmcc.Stats.Features.Playerbase.ChartData
+namespace Mmcc.Stats.Features.PlayerbaseChartData
 {
     public class GetAvg
     {
@@ -38,7 +38,7 @@ namespace Mmcc.Stats.Features.Playerbase.ChartData
 
         public class Result
         {
-            public IEnumerable<ServerChartDataDto> ServerAvgChartDataDtos;
+            public IList<ServerPlayerbaseChartData> ServerAvgChartDataDtos;
         }
 
         public class Handler : IRequestHandler<Query, Result>
@@ -54,12 +54,12 @@ namespace Mmcc.Stats.Features.Playerbase.ChartData
             {
                 var query = new Get.Query{ FromDateTime = request.FromDateTime, ToDateTime = request.ToDateTime};
                 var chartData = (await _mediator.Send(query, cancellationToken)).ServersChartData;
-                var avgData = chartData.Select(server => new ServerChartDataDto
+                var avgData = chartData.Select(server => new ServerPlayerbaseChartData
                 {
                     ServerName = server.ServerName, 
                     Players = server.Players.MovingAverage(request.WindowSize),
                     Times = server.Times
-                });
+                }).ToList();
                 return new Result
                 {
                     ServerAvgChartDataDtos = avgData

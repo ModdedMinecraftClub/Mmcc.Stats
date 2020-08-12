@@ -110,9 +110,11 @@ namespace Mmcc.Stats.Core.Data
 
             modelBuilder.Entity<TpsStat>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("tpsstats");
+                
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
 
                 entity.HasIndex(e => e.ServerId)
                     .HasName("tpsstats_server_serverId_fk");

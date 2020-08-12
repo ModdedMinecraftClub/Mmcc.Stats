@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Tps\ChartData" />
-  </ItemGroup>
-
-  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\build\bundle.css" />
     <_ContentIncludedByDefault Remove="wwwroot\build\bundle.css.map" />
     <_ContentIncludedByDefault Remove="wwwroot\build\bundle.js" />

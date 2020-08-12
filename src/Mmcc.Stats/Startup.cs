@@ -1,10 +1,8 @@
-using System.Net.Mime;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +13,7 @@ using Mmcc.Stats.Core.Data.Models.Settings;
 using Mmcc.Stats.Core.Interfaces;
 using Mmcc.Stats.Infrastructure.Authentication;
 using Mmcc.Stats.Infrastructure.Authentication.ClientAppAuthentication;
+using Mmcc.Stats.Infrastructure.Commands;
 using Mmcc.Stats.Infrastructure.HostedServices;
 using Mmcc.Stats.Infrastructure.Services;
 using TraceLd.DiscordWebhook;
@@ -56,15 +55,16 @@ namespace Mmcc.Stats
                         $"server={dbConfig.Server};database={dbConfig.DatabaseName};uid={dbConfig.Username};pwd={dbConfig.Password}");
                 });
 
-            services.AddMediatR(typeof(Startup));
+            services.AddMediatR(typeof(Startup), typeof(NotifyStaffAboutTps));
+
             services.AddScoped<IPollerService, PollerService>();
             
+            services.AddHostedService<PollerTimedHostedService>();
+
             services.AddAuthentication("ClientApp")
                 .AddScheme<ClientAppAuthenticationOptions, ClientAppAuthenticationHandler>("ClientApp", null);
             services.AddAntiforgery(options => options.HeaderName = "X-Auth-Token");
             
-            services.AddHostedService<PollerTimedHostedService>();
-
             services.AddControllers()
                 .AddFluentValidation(configuration =>
                 {
