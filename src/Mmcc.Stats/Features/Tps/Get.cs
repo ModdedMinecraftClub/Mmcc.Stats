@@ -22,7 +22,7 @@ namespace Mmcc.Stats.Features.Tps
             {
                 RuleFor(x => x.Id)
                     .NotNull()
-                    .GreaterThanOrEqualTo(0);
+                    .GreaterThan(0);
             }
         }
 

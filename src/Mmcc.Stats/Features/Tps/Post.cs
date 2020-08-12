@@ -24,11 +24,11 @@ namespace Mmcc.Stats.Features.Tps
             {
                 RuleFor(c => c.ServerId)
                     .NotNull()
-                    .GreaterThanOrEqualTo(0);
+                    .GreaterThan(0);
                 
                 RuleFor(c => c.Tps)
                     .NotNull()
-                    .GreaterThanOrEqualTo(0);
+                    .GreaterThan(0);
             }
         }
 
