@@ -84,14 +84,18 @@ namespace Mmcc.Stats
             {
                 settings.DocumentName = "openapi";
                 
-                settings.AddSecurity("ClientApp", Enumerable.Empty<string>(), new OpenApiSecurityScheme
-                {
-                    Type = OpenApiSecuritySchemeType.ApiKey,
-                    Description = "Authentications used for client apps, such as Mmcc.Stats.TpsMonitor",
-                    Name = "X-Auth-Token",
-                    In = OpenApiSecurityApiKeyLocation.Header
-                });
-                
+                // add authorization info;
+                settings.DocumentProcessors.Add(
+                    new SecurityDefinitionAppender("ClientApp",
+                        new OpenApiSecurityScheme
+                        {
+                            Type = OpenApiSecuritySchemeType.ApiKey,
+                            Description = "Authentications used for client apps, such as Mmcc.Stats.TpsMonitor",
+                            Name = "X-Auth-Token",
+                            In = OpenApiSecurityApiKeyLocation.Header
+                        }));
+                settings.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("ClientApp"));
+
                 // add fluent validation;
                 var fluentValidationSchemaProcessor = provider.GetService<FluentValidationSchemaProcessor>();
                 settings.SchemaProcessors.Add(fluentValidationSchemaProcessor);
