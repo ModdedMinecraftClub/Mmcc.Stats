@@ -39,7 +39,7 @@ namespace Mmcc.Stats.Features.Tps
             {
                 var res = await _context.TpsStats.AsNoTracking()
                     .Where(t => t.Id == request.Id)
-                    .SingleOrDefaultAsync(cancellationToken);
+                    .FirstOrDefaultAsync(cancellationToken);
                 return res;
             }
         }

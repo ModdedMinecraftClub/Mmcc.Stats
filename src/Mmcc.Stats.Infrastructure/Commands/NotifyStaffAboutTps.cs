@@ -42,7 +42,7 @@ namespace Mmcc.Stats.Infrastructure.Commands
                 // grab corresponding server details;
                 var server = await _context.Servers.AsNoTracking()
                     .Where(x => x.ServerId == request.TpsStat.ServerId)
-                    .SingleOrDefaultAsync(cancellationToken);
+                    .FirstOrDefaultAsync(cancellationToken);
                 // if there is no corresponding server, that means there is something seriously wrong with our
                 // request therefore we throw;
                 if (server is null)
