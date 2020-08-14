@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -16,8 +17,12 @@ using Mmcc.Stats.Infrastructure.Authentication.ClientAppAuthentication;
 using Mmcc.Stats.Infrastructure.Commands;
 using Mmcc.Stats.Infrastructure.HostedServices;
 using Mmcc.Stats.Infrastructure.Services;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 using TraceLd.DiscordWebhook;
 using TraceLd.DiscordWebhook.Models;
+using ZymLabs.NSwag.FluentValidation;
+using ZymLabs.NSwag.FluentValidation.AspNetCore;
 
 namespace Mmcc.Stats
 {
@@ -45,7 +50,8 @@ namespace Mmcc.Stats
             services.AddSingleton(provider => provider.GetRequiredService<IOptions<WebhookSettings>>().Value);
             services.Configure<TpsPingSettings>(Configuration.GetSection(nameof(TpsPingSettings)));
             services.AddSingleton(provider => provider.GetRequiredService<IOptions<TpsPingSettings>>().Value);
-
+            
+            services.AddHttpContextAccessor();
             services.AddHttpClient<IWebhookService, WebhookService>();
 
             services.AddDbContext<PollerContext>((provider, builder) =>
@@ -57,6 +63,7 @@ namespace Mmcc.Stats
 
             services.AddMediatR(typeof(Startup), typeof(NotifyStaffAboutTps));
 
+            services.AddSingleton<FluentValidationSchemaProcessor>();
             services.AddScoped<IPollerService, PollerService>();
             
             services.AddHostedService<PollerTimedHostedService>();
@@ -70,7 +77,38 @@ namespace Mmcc.Stats
                 {
                     configuration.RegisterValidatorsFromAssemblyContaining<Startup>();
                     configuration.ImplicitlyValidateChildProperties = true;
+                    configuration.ValidatorFactoryType = typeof(HttpContextServiceProviderValidatorFactory);
                 });
+
+            services.AddOpenApiDocument((settings, provider) =>
+            {
+                settings.DocumentName = "openapi";
+                
+                settings.AddSecurity("ClientApp", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Description = "Authentications used for client apps, such as Mmcc.Stats.TpsMonitor",
+                    Name = "X-Auth-Token",
+                    In = OpenApiSecurityApiKeyLocation.Header
+                });
+                
+                // add fluent validation;
+                var fluentValidationSchemaProcessor = provider.GetService<FluentValidationSchemaProcessor>();
+                settings.SchemaProcessors.Add(fluentValidationSchemaProcessor);
+                
+                // add basic info;
+                settings.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "MMCC Stats API";
+                    document.Info.Description = "API for MMCC Statistics.";
+                    document.Info.License = new OpenApiLicense
+                    {
+                        Name = "GNU Affero General Public License v3.0",
+                        Url = "https://github.com/ModdedMinecraftClub/Mmcc.Stats/blob/master/LICENSE"
+                    };
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,14 +122,23 @@ namespace Mmcc.Stats
             {
                 app.UseForwardedHeaders();
             }
-
+            
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseRouting();
-        
-            app.UseAuthorization();
+            app.UseOpenApi(settings =>
+            {
+                settings.DocumentName = "openapi";
+                settings.Path = "/openapi/v1/openapi.json";
+            });
+            app.UseReDoc(settings =>
+            {
+                settings.Path = "/docs";
+                settings.DocumentPath = "/openapi/v1/openapi.json";
+            });
             
+            app.UseRouting();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

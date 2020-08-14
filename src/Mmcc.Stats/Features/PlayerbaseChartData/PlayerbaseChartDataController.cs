@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Mmcc.Stats.Core.Data.Dtos;
@@ -23,6 +25,8 @@ namespace Mmcc.Stats.Features.PlayerbaseChartData
         }
         
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<ServerPlayerbaseChartData>>> Get([FromQuery] Get.Query query)
         {
             var result = await _mediator.Send(query);
@@ -30,6 +34,8 @@ namespace Mmcc.Stats.Features.PlayerbaseChartData
         }
 
         [HttpGet("avg")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<ServerPlayerbaseChartData>>> GetAvg([FromQuery] GetAvg.Query query)
         {
             var result = await _mediator.Send(query);
