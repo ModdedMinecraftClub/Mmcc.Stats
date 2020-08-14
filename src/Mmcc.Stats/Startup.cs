@@ -1,4 +1,3 @@
-using System.Linq;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -90,7 +89,7 @@ namespace Mmcc.Stats
                         new OpenApiSecurityScheme
                         {
                             Type = OpenApiSecuritySchemeType.ApiKey,
-                            Description = "Authentications used for client apps, such as Mmcc.Stats.TpsMonitor",
+                            Description = "Authentication used for client apps, such as Mmcc.Stats.TpsMonitor",
                             Name = "X-Auth-Token",
                             In = OpenApiSecurityApiKeyLocation.Header
                         }));
