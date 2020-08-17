@@ -16,7 +16,7 @@
             return;
         }
 
-        let response = await fetch(`/api/tps-stats?from=${from}&to=${to}`);
+        let response = await fetch(`/api/tps/chart?FromDateTime=${from}&ToDateTime=${to}`);
 
         if (!response.ok) {
             alert("API HTTP-Error" + response.status);
@@ -25,8 +25,6 @@
 
         let responseData = await response.json();
 
-        console.log(responseData);
-
         createPlot(responseData);
     }
 
@@ -34,50 +32,28 @@
         let traces = [];
     
         for (const serverData of data) {
-            let parallelArrays = createParallelArrays(serverData.tpsStats);
-
-            traces.push(createTrace(serverData.serverName, parallelArrays));
+            traces.push(createTrace(serverData));
         }
 
         let layout = {
             autosize: true // set autosize to rescale
-        };    
+        };
         let config = {responsive: true}
-
-        console.log(traces);
 
         Plotly.newPlot('plot', traces, layout, config);    
     }
 
-    function createTrace(name, parallelArrays) {
+    function createTrace(data) {
         return {
-            name: name,
-            x: parallelArrays.times,
-            y: parallelArrays.tpsList,
+            name: data.serverName,
+            x: data.times,
+            y: data.tps,
             mode: 'lines',
             type: 'scatter',
             line: {
                 smoothing: 1.3
             }
         };
-    }
-
-    function createParallelArrays(tpsStats) {
-        let times = [];
-        let tpsList = [];
-
-        for (const tpsStat of tpsStats) {
-            times.push(tpsStat.time);
-            tpsList.push(tpsStat.tps);
-        }
-
-        console.log(times);
-        console.log(tpsList);
-
-        return {
-            times,
-            tpsList
-        }
     }
 </script>
 

@@ -1,9 +1,13 @@
-logs/
-
 # Don't include compiled C# binaries
 out/
 bin/
 obj/
+
+# Don't include compiled Svelte
+wwwroot/
+
+# Don't include ASP.NET Core Serilog logs
+logs/
 
 # Don't include IDE specific files
 .idea/
@@ -14,4 +18,5 @@ obj/
 appsettings.json
 appsettings.Development.json
 
-wwwroot/
+# Don't include dev tools
+scc.exe

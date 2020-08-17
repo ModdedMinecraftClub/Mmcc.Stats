@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Mmcc.Stats.Core;
 using Mmcc.Stats.Core.Interfaces;
 
 namespace Mmcc.Stats.Infrastructure.HostedServices
@@ -27,7 +26,7 @@ namespace Mmcc.Stats.Infrastructure.HostedServices
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Poller Timed Hosted Service is starting...");
+            _logger.LogInformation($"[{nameof(PollerTimedHostedService)}] Starting the service...");
             
             _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(10));
             
@@ -36,24 +35,29 @@ namespace Mmcc.Stats.Infrastructure.HostedServices
 
         private async void DoWork(object state)
         {
-            _logger.LogInformation("Poller Timed Hosted Service: Polling...");
+            _logger.LogInformation($"[{nameof(PollerTimedHostedService)}] Polling...");
 
             using var scope = Services.CreateScope();
             var scopedProcessingService = 
                 scope.ServiceProvider
                     .GetRequiredService<IPollerService>();
 
-            await scopedProcessingService.PollAsync();
-            
-            _logger.LogInformation("Poller Timed Hosted Service: Polling has completed.");
+            try
+            {
+                await scopedProcessingService.PollAsync();
+                _logger.LogInformation($"[{nameof(PollerTimedHostedService)}] Polling has completed.");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Exception has occurred while polling.");
+                _logger.LogError($"[{nameof(PollerTimedHostedService)}] Polling has failed. Retrying in 10 minutes.");
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Poller Timed Hosted Service is stopping...");
-
+            _logger.LogInformation($"[{nameof(PollerTimedHostedService)}] Stopping the service.");
             _timer.Change(Timeout.Infinite, 0);
-            
             return Task.CompletedTask;
         }
 
