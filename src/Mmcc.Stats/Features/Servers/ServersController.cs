@@ -26,7 +26,6 @@ namespace Mmcc.Stats.Features.Servers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<ServerDto>>> Get()
         {
             var res = await _mediator.Send(new Get.Query());
