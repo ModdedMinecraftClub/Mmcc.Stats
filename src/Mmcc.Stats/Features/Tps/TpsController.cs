@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -21,12 +22,20 @@ namespace Mmcc.Stats.Features.Tps
             _logger = logger;
             _mediator = mediator;
         }
-        
+
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<TpsStat>>> Get()
+        {
+            var res = await _mediator.Send(new Get.Query());
+            return Ok(res);
+        }
+        
+        [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<TpsStat>> Get([FromQuery] Get.Query query)
+        public async Task<ActionResult<TpsStat>> GetById([FromRoute] GetById.Query query)
         {
             var res = await _mediator.Send(query);
             if (res is null)
@@ -41,8 +50,8 @@ namespace Mmcc.Stats.Features.Tps
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<TpsStat>> Post([FromBody] Post.Command command)
         {
-            var result = await _mediator.Send(command);
-            return CreatedAtAction(nameof(Get), new {id = result.Id}, result);
+            var res = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetById), new {id = res.Id}, res);
         }
     }
 }
