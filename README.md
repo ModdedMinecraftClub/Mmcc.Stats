@@ -27,6 +27,6 @@ MMCC Statistics (player count & TPS) - available at [poller.moddedminecraft.club
 
 **3.** Go to `./src/Mmcc.Stats.Frontend` and run `npm install`.
 
-**3.** In the root directory of the cloned repository run the following command: `.\publish.ps1`.
+**3.** In the root directory of the cloned repository run the following command: `./publish.ps1`.
 
 **4.** You will find the compiled version of the app in `./out`.
