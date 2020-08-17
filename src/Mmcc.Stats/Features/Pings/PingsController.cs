@@ -30,10 +30,10 @@ namespace Mmcc.Stats.Features.Pings
             return Ok(res);
         }
 
-        [HttpGet]
+        [HttpGet("/server/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IEnumerable<Ping>>> GetByServerId([FromQuery] GetByServerId.Query query)
+        public async Task<ActionResult<IEnumerable<Ping>>> GetByServerId([FromRoute] GetByServerId.Query query)
         {
             var res = await _mediator.Send(query);
             return Ok(res);
