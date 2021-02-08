@@ -52,18 +52,20 @@ namespace Mmcc.Stats.Features.PlayerbaseChartData
                 {
                     request.ToDateTime = request.ToDateTime.AddDays(1);
                 }
-                
-                var data = (await _context.Pings.AsNoTracking()
-                    .Include(s => s.Server).AsNoTracking()
-                    .Where(x => x.PingTime.Date >= request.FromDateTime.Date && x.PingTime.Date <= request.ToDateTime.Date)
-                    .Select(s => new
-                    {
-                        s.ServerId,
-                        s.Server.ServerName,
-                        s.PingTime,
-                        s.PlayersOnline
-                    })
-                    .ToListAsync(cancellationToken))
+
+                var data = (await _context.Pings
+                        .AsNoTracking()
+                        .Include(s => s.Server)
+                        .Where(x => x.PingTime.Date >= request.FromDateTime.Date &&
+                                    x.PingTime.Date <= request.ToDateTime.Date)
+                        .Select(s => new
+                        {
+                            s.ServerId,
+                            s.Server.ServerName,
+                            s.PingTime,
+                            s.PlayersOnline
+                        })
+                        .ToListAsync(cancellationToken))
                     .GroupBy(ping => ping.ServerId)
                     .Select(serverPing => new ServerPlayerbaseChartData
                     {

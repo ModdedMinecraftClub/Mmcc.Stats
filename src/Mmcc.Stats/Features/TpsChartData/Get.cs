@@ -53,8 +53,9 @@ namespace Mmcc.Stats.Features.TpsChartData
                     request.ToDateTime = request.ToDateTime.AddDays(1);
                 }
 
-                var data = (await _context.TpsStats.AsNoTracking()
-                        .Include(s => s.Server).AsNoTracking()
+                var data = (await _context.TpsStats
+                        .AsNoTracking()
+                        .Include(s => s.Server)
                         .Where(x => x.StatTime.Date >= request.FromDateTime.Date &&
                                     x.StatTime.Date <= request.ToDateTime.Date)
                         .Select(s => new
