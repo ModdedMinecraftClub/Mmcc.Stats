@@ -56,8 +56,11 @@ namespace Mmcc.Stats
             services.AddDbContext<PollerContext>((provider, builder) =>
                 {
                     var dbConfig = provider.GetRequiredService<DatabaseSettings>();
-                    builder.UseMySql(
-                        $"server={dbConfig.Server};database={dbConfig.DatabaseName};uid={dbConfig.Username};pwd={dbConfig.Password}");
+                    var connString =
+                        $"server={dbConfig.Server};database={dbConfig.DatabaseName};uid={dbConfig.Username};pwd={dbConfig.Password}";
+                    var serverVersion = ServerVersion.FromString("10.4.11-mariadb");
+                    
+                    builder.UseMySql(connString, serverVersion);
                 });
 
             services.AddMediatR(typeof(Startup), typeof(NotifyStaffAboutTps));
