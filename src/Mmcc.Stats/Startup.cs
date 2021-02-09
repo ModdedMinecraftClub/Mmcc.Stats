@@ -11,9 +11,7 @@ using Microsoft.Extensions.Options;
 using Mmcc.Stats.Core.Data;
 using Mmcc.Stats.Core.Data.Models.Settings;
 using Mmcc.Stats.Core.Interfaces;
-using Mmcc.Stats.Infrastructure.Authentication;
 using Mmcc.Stats.Infrastructure.Authentication.ClientAppAuthentication;
-using Mmcc.Stats.Infrastructure.Commands;
 using Mmcc.Stats.Infrastructure.HostedServices;
 using Mmcc.Stats.Infrastructure.Services;
 using NSwag;
@@ -63,7 +61,7 @@ namespace Mmcc.Stats
                     builder.UseMySql(connString, serverVersion);
                 });
 
-            services.AddMediatR(typeof(Startup), typeof(NotifyStaffAboutTps));
+            services.AddMediatR(typeof(Startup));
 
             services.AddSingleton<FluentValidationSchemaProcessor>();
             services.AddScoped<IPollerService, PollerService>();
