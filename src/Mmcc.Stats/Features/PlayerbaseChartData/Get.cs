@@ -34,7 +34,7 @@ namespace Mmcc.Stats.Features.PlayerbaseChartData
 
         public class Result
         {
-            public IList<ServerPlayerbaseChartData> ServersChartData;
+            public IList<ServerPlayerbaseChartData> ServersChartData { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result>

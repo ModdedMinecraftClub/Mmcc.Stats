@@ -38,7 +38,7 @@ namespace Mmcc.Stats.Features.PlayerbaseChartData
 
         public class Result
         {
-            public IList<ServerPlayerbaseChartData> ServerAvgChartDataDtos;
+            public IList<ServerPlayerbaseChartData> ServerAvgChartDataDtos { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result>
