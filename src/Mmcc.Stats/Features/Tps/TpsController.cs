@@ -57,7 +57,7 @@ namespace Mmcc.Stats.Features.Tps
         [HttpGet("chart")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IEnumerable<ServerTpsChartData>>> Get([FromQuery] GetChartData.Query query)
+        public async Task<ActionResult<IEnumerable<ServerTpsChartData>>> GetChartData([FromQuery] GetChartData.Query query)
         {
             var result = await _mediator.Send(query);
             return Ok(result.ServersChartData);

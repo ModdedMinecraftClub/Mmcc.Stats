@@ -17,7 +17,7 @@ export class TpsClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "https://localhost:5001";
     }
 
-    getAll(): Promise<TpsStat[]> {
+    get(): Promise<TpsStat[]> {
         let url_ = this.baseUrl + "/api/tps";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -29,11 +29,11 @@ export class TpsClient {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetAll(_response);
+            return this.processGet(_response);
         });
     }
 
-    protected processGetAll(response: Response): Promise<TpsStat[]> {
+    protected processGet(response: Response): Promise<TpsStat[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -158,7 +158,7 @@ export class TpsClient {
         return Promise.resolve<TpsStat>(<any>null);
     }
 
-    get(fromDateTime: Date | undefined, toDateTime: Date | undefined): Promise<ServerTpsChartData[]> {
+    getChartData(fromDateTime: Date | undefined, toDateTime: Date | undefined): Promise<ServerTpsChartData[]> {
         let url_ = this.baseUrl + "/api/tps/chart?";
         if (fromDateTime === null)
             throw new Error("The parameter 'fromDateTime' cannot be null.");
@@ -178,11 +178,11 @@ export class TpsClient {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGet(_response);
+            return this.processGetChartData(_response);
         });
     }
 
-    protected processGet(response: Response): Promise<ServerTpsChartData[]> {
+    protected processGetChartData(response: Response): Promise<ServerTpsChartData[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
