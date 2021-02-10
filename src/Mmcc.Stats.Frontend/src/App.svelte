@@ -6,4 +6,8 @@
 	@tailwind base;
 	@tailwind components;
 	@tailwind utilities;
+
+	body {
+		@apply font-body;
+	}
 </style>
