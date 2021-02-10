@@ -7,6 +7,7 @@
         TpsClient,
     } from "../clients";
     import Loading from "../Loading.svelte";
+import PlayerbaseChartCard from "./PlayerbaseChartCard.svelte";
     import WeeklyTrendsCard from "./WeeklyTrendsCard.svelte";
 
     interface IBasicInfo {
@@ -32,11 +33,22 @@
     {#await loadBasic()}
         <Loading />
     {:then res}
-        <h2 class="my-2 text-lg ml-1 text-gray-300 uppercase tracking-wide">
-            Weekly trends
-        </h2>
-        <div>
+        <div id="weekly-trends">
+            <h2 class="my-2 text-lg ml-1 text-gray-300 uppercase tracking-wide">
+                Weekly trends
+            </h2>
             <WeeklyTrendsCard pingsWeeklyAvgs={res.pingsAvgs} tpsWeeklyAvgs={res.tpsAvg} />
+        </div>
+        <div id="charts">
+            <h2 class="mt-12 mb-2 text-lg ml-1 text-gray-300 uppercase tracking-wide">
+                Charts
+            </h2>
+            <div class="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-x-8">
+                <PlayerbaseChartCard />
+                <div class="bg-red-500">
+                    p
+                </div>
+            </div>
         </div>
     {/await}
 </div>
