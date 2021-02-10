@@ -1,12 +1,17 @@
 <script lang="ts">
+	import DashboardMain from "./dashboard/DashboardMain.svelte";
+	import Footer from "./Footer.svelte";
 	import Navbar from "./navigation/Navbar.svelte";
+
+	// html, body, main {
+	//	 @apply h-full;
+	// }
 </script>
 
 <main>
 	<Navbar />
-	<div class="mt-auto h-full bg-gray-900">
-		<h1 class="text-2xl text-gray-100 mt-0 pt-0">Hello!</h1>
-	</div>
+	<DashboardMain />
+	<Footer />
 </main>
 
 <style global>
@@ -14,11 +19,11 @@
 	@tailwind components;
 	@tailwind utilities;
 
-	html, body, main {
-		@apply h-full;
-	}
-
 	body {
 		@apply font-body;
+	}
+
+	.card {
+		@apply rounded-lg bg-gray-800 py-4 px-6 shadow-md;
 	}
 </style>
