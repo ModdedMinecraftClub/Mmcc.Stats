@@ -44,7 +44,7 @@
 
 <div
     id="basic-container"
-    class="card lg:flex lg:flex-col lg:h-96 lg:flex-wrap pt-56"
+    class="card flex flex-col lg:h-96 lg:flex-wrap pt-56 gap-y-4 lg:gap-y-0"
 >
     {#each pingsWeeklyAvgs.thisWeek as avg}
         <WeeklyTrendsItem thisAvg={avg} pingsWeeklyAvgs={pingsWeeklyAvgs} tpsWeeklyAvgs={tpsWeeklyAvgs} />

@@ -68,7 +68,7 @@
                     getCorrespondingLastWeek(thisAvg)
                 )}</span
             >
-            <span class="font-light">vs last week</span>
+            <span class="font-light hidden lg:inline-block">vs last week</span>
         </div>
         <div class="border-l border-gray-500 h-8 w-1 mr-2 ml-3" />
         <div>

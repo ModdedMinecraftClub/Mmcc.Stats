@@ -1,10 +1,10 @@
 <script lang="ts">
-	import DashboardMain from "./dashboard/DashboardMain.svelte";
-	import Footer from "./Footer.svelte";
 	import Navbar from "./navigation/Navbar.svelte";
+	import DashboardMain from "./dashboard/DashboardMain.svelte";	
+	import Footer from "./Footer.svelte";
 </script>
 
-<main>
+<main class="flex flex-col">
 	<Navbar />
 	<DashboardMain />
 	<Footer />
@@ -15,7 +15,7 @@
 	@tailwind components;
 	@tailwind utilities;
 
-	html, body {
+	html, body, main {
 		@apply h-full bg-gray-900;
 	}
 

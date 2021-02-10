@@ -31,7 +31,7 @@
     }
 </script>
 
-<div class="bg-gray-900 text-gray-100 py-10 px-6 lg:px-10 h-full mb-auto">
+<div class="bg-gray-900 text-gray-100 py-16 px-6 mb-12 lg:px-10">
     {#await loadBasic()}
         <div in:fade={{delay: 400, duration: 300}} out:fade={{duration: 300}} wmode="transparent">
             <Loading />
