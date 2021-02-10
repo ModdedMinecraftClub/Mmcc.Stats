@@ -10,6 +10,7 @@
     import PlayerbaseChartCard from "./PlayerbaseChartCard.svelte";
     import WeeklyTrendsCard from "./WeeklyTrendsCard.svelte";
     import { fade } from "svelte/transition";
+    import TpsChartCard from "./TpsChartCard.svelte";
 
     interface IBasicInfo {
         tpsAvg: TpsWeeklyAvgs;
@@ -49,9 +50,7 @@
                 </h2>
                 <div class="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-x-8">
                     <PlayerbaseChartCard pingsClient={pingsClient} />
-                    <div class="bg-gray-600">
-                        p
-                    </div>
+                    <TpsChartCard tpsClient={tpsClient} />
                 </div>
             </div>
         </div>
