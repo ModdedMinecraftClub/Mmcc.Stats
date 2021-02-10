@@ -7,8 +7,7 @@
         TpsClient,
     } from "../clients";
     import Loading from "../Loading.svelte";
-    import PlayerbaseCard from "./PlayerbaseCard.svelte";
-    import TpsCard from "./TpsCard.svelte";
+    import WeeklyTrendsCard from "./WeeklyTrendsCard.svelte";
 
     interface IBasicInfo {
         tpsAvg: TpsWeeklyAvgs;
@@ -21,8 +20,6 @@
     async function loadBasic(): Promise<IBasicInfo> {
         let tpsRes: TpsWeeklyAvgs = (await tpsClient.getWeeklyAvgs());
         let pingsRes: PingsWeeklyAvgs = await pingsClient.getWeeklyAvgs();
-
-        console.log(pingsRes);
 
         return {
             tpsAvg: tpsRes,
@@ -38,8 +35,8 @@
         <h2 class="my-2 text-lg ml-1 text-gray-300 uppercase tracking-wide">
             Weekly trends
         </h2>
-        <div>            
-            <PlayerbaseCard pingsWeeklyAvgs={res.pingsAvgs} tpsWeeklyAvgs={res.tpsAvg} />
+        <div>
+            <WeeklyTrendsCard pingsWeeklyAvgs={res.pingsAvgs} tpsWeeklyAvgs={res.tpsAvg} />
         </div>
     {/await}
 </div>

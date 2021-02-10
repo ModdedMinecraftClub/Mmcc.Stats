@@ -1,0 +1,83 @@
+<script lang="ts">
+    import type {
+        Average,
+        Average2 as TpsAverage,
+        Result as TpsWeeklyAvgs,
+        Result2 as PingsWeeklyAvgs,
+    } from "../clients";
+
+    export let thisAvg: Average;
+    export let pingsWeeklyAvgs: PingsWeeklyAvgs;
+    export let tpsWeeklyAvgs: TpsWeeklyAvgs;
+
+    function getDifferenceString(thisWeek: number, lastWeek: number): string {
+        if (lastWeek === 0) return "+100%";
+        const v: number = ((thisWeek - lastWeek) / lastWeek) * 100;
+        if (v >= 0) return `+${v}%`;
+        return `-${v}%`;
+    }
+
+    function getCorrespondingLastWeek(avg: Average): number {
+        const res: Average = pingsWeeklyAvgs.lastWeek.find(
+            (el) => el.serverName === avg.serverName
+        );
+
+        if (res === undefined || res === null) {
+            return 0;
+        } else {
+            return res.avg;
+        }
+    }
+
+    function getCorrespondingTpsString(avg: Average): string {
+        const res: TpsAverage = tpsWeeklyAvgs.averages.find(
+            (el) => el.serverName === avg.serverName
+        );
+
+        if (res === undefined || res === null) {
+            return "N/A";
+        } else {
+            return res.avg.toFixed(2);
+        }
+    }
+</script>
+
+<div class="lg:mt-4 lg:px-4" id="basic-stats">
+    <p class="font-semibold text-sm text-gray-300">{thisAvg.serverName}</p>
+    <div class="flex items-center">
+        <div>
+            <p class="text-3xl mb-0">{thisAvg.avg.toFixed(2)}</p>
+            <p class="font-light text-xs text-gray-500 -mt-1">
+                avg players
+            </p>
+        </div>
+        <div
+            class:bg-green-500={getDifferenceString(
+                thisAvg.avg,
+                getCorrespondingLastWeek(thisAvg)
+            ).startsWith("+")}
+            class:bg-red-500={getDifferenceString(
+                thisAvg.avg,
+                getCorrespondingLastWeek(thisAvg)
+            ).startsWith("-")}
+            class="rounded text-sm px-2 py-1 ml-3"
+        >
+            <span class="font-bold"
+                >{getDifferenceString(
+                    thisAvg.avg,
+                    getCorrespondingLastWeek(thisAvg)
+                )}</span
+            >
+            <span class="font-light">vs last week</span>
+        </div>
+        <div class="border-l border-gray-500 h-8 w-1 mr-2 ml-3" />
+        <div>
+            <p class="text-3xl mb-0">
+                {getCorrespondingTpsString(thisAvg)}
+            </p>
+            <p class="font-light text-xs text-gray-500 -mt-1">
+                avg tps
+            </p>
+        </div>
+    </div>
+</div>
