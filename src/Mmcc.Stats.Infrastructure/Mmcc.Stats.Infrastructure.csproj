@@ -1,16 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <LangVersion>preview</LangVersion>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="9.1.1" />
-    <PackageReference Include="MathNet.Numerics" Version="4.12.0" />
-    <PackageReference Include="MediatR" Version="8.1.0" />
+    <PackageReference Include="FluentValidation" Version="9.5.0" />
+    <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
     <PackageReference Include="TraceLd.DiscordWebhook" Version="1.0.4" />
     <PackageReference Include="TraceLd.MineStatSharp" Version="1.0.0" />
   </ItemGroup>

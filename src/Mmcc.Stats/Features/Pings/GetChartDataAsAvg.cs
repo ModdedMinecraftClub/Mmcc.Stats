@@ -8,9 +8,9 @@ using MathNet.Numerics.Statistics;
 using MediatR;
 using Mmcc.Stats.Core.Data.Dtos;
 
-namespace Mmcc.Stats.Features.PlayerbaseChartData
+namespace Mmcc.Stats.Features.Pings
 {
-    public class GetAvg
+    public class GetChartDataAsAvg
     {
         public class Query : IRequest<Result>
         {
@@ -38,7 +38,7 @@ namespace Mmcc.Stats.Features.PlayerbaseChartData
 
         public class Result
         {
-            public IList<ServerPlayerbaseChartData> ServerAvgChartDataDtos;
+            public IList<ServerPlayerbaseChartData> ServerAvgChartDataDtos { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result>
@@ -52,7 +52,7 @@ namespace Mmcc.Stats.Features.PlayerbaseChartData
 
             public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
             {
-                var query = new Get.Query{ FromDateTime = request.FromDateTime, ToDateTime = request.ToDateTime};
+                var query = new GetChartData.Query{ FromDateTime = request.FromDateTime, ToDateTime = request.ToDateTime};
                 var chartData = (await _mediator.Send(query, cancellationToken)).ServersChartData;
                 var avgData = chartData.Select(server => new ServerPlayerbaseChartData
                 {

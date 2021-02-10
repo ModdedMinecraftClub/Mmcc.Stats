@@ -11,9 +11,7 @@ using Microsoft.Extensions.Options;
 using Mmcc.Stats.Core.Data;
 using Mmcc.Stats.Core.Data.Models.Settings;
 using Mmcc.Stats.Core.Interfaces;
-using Mmcc.Stats.Infrastructure.Authentication;
 using Mmcc.Stats.Infrastructure.Authentication.ClientAppAuthentication;
-using Mmcc.Stats.Infrastructure.Commands;
 using Mmcc.Stats.Infrastructure.HostedServices;
 using Mmcc.Stats.Infrastructure.Services;
 using NSwag;
@@ -27,12 +25,14 @@ namespace Mmcc.Stats
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -56,11 +56,14 @@ namespace Mmcc.Stats
             services.AddDbContext<PollerContext>((provider, builder) =>
                 {
                     var dbConfig = provider.GetRequiredService<DatabaseSettings>();
-                    builder.UseMySql(
-                        $"server={dbConfig.Server};database={dbConfig.DatabaseName};uid={dbConfig.Username};pwd={dbConfig.Password}");
+                    var connString =
+                        $"server={dbConfig.Server};database={dbConfig.DatabaseName};uid={dbConfig.Username};pwd={dbConfig.Password}";
+                    var serverVersion = ServerVersion.FromString("10.4.11-mariadb");
+                    
+                    builder.UseMySql(connString, serverVersion);
                 });
 
-            services.AddMediatR(typeof(Startup), typeof(NotifyStaffAboutTps));
+            services.AddMediatR(typeof(Startup));
 
             services.AddSingleton<FluentValidationSchemaProcessor>();
             services.AddScoped<IPollerService, PollerService>();
@@ -102,7 +105,7 @@ namespace Mmcc.Stats
                 // add basic info;
                 settings.PostProcess = document =>
                 {
-                    document.Info.Version = "v1";
+                    document.Info.Version = "v2";
                     document.Info.Title = "MMCC Stats API";
                     document.Info.Description = "API for MMCC Statistics.";
                     document.Info.License = new OpenApiLicense
@@ -112,6 +115,24 @@ namespace Mmcc.Stats
                     };
                 };
             });
+            
+            if (Environment.IsDevelopment())
+            {
+                services.AddCors(options =>
+                {
+                    options.AddDefaultPolicy(
+                        builder =>
+                        {
+                            builder.WithOrigins("http://localhost:5002")
+                                .AllowCredentials()
+                                .AllowAnyHeader();
+                            
+                            builder.WithOrigins("http://localhost:8080")
+                                .AllowCredentials()
+                                .AllowAnyHeader();
+                        });
+                });
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -120,6 +141,7 @@ namespace Mmcc.Stats
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors();
             }
             else
             {
@@ -132,12 +154,12 @@ namespace Mmcc.Stats
             app.UseOpenApi(settings =>
             {
                 settings.DocumentName = "openapi";
-                settings.Path = "/openapi/v1/openapi.json";
+                settings.Path = "/openapi/v2/openapi.json";
             });
             app.UseReDoc(settings =>
             {
                 settings.Path = "/docs";
-                settings.DocumentPath = "/openapi/v1/openapi.json";
+                settings.DocumentPath = "/openapi/v2/openapi.json";
             });
             
             app.UseRouting();

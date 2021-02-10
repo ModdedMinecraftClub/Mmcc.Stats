@@ -1,26 +1,29 @@
-<script>
-	import Navbar from "./Navbar.svelte"
-	import Footer from "./Footer.svelte"
-	import Stats from "./Stats.svelte"
+<script lang="ts">
+	import Navbar from "./navigation/Navbar.svelte";
+	import DashboardMain from "./dashboard/DashboardMain.svelte";	
+	import Footer from "./Footer.svelte";
 </script>
 
-<div class="wrapper">
-	<div class="cont">
-		<Navbar/>
-		<Stats/>
-	</div>
-	<Footer/>
-</div>
+<main class="flex flex-col">
+	<Navbar />
+	<DashboardMain />
+	<Footer />
+</main>
 
-<style>
-	.wrapper {
-		display: flex;
-		flex-direction: column;
-		min-height: 100%;
-		min-width: 100%;
+<style global>
+	@tailwind base;
+	@tailwind components;
+	@tailwind utilities;
+
+	html, body, main {
+		@apply h-full bg-gray-900;
 	}
 
-	.cont {
-		flex-grow: 1;
+	body {
+		@apply font-body;
+	}
+
+	.card {
+		@apply rounded-lg bg-gray-800 py-4 px-6 shadow-md;
 	}
 </style>

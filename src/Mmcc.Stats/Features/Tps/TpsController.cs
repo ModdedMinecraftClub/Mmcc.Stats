@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Mmcc.Stats.Core.Data.Dtos;
 using Mmcc.Stats.Core.Data.Models;
 
 namespace Mmcc.Stats.Features.Tps
@@ -52,6 +52,24 @@ namespace Mmcc.Stats.Features.Tps
         {
             var res = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetById), new {id = res.Id}, res);
+        }
+        
+        [HttpGet("chart")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IEnumerable<ServerTpsChartData>>> GetChartData([FromQuery] GetChartData.Query query)
+        {
+            var result = await _mediator.Send(query);
+            return Ok(result.ServersChartData);
+        }
+        
+        [HttpGet("weekly/avgs")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<GetWeeklyAvgs.Result>> GetWeeklyAvgs()
+        {
+            var res = await _mediator.Send(new GetWeeklyAvgs.Query());
+            return Ok(res);
         }
     }
 }
