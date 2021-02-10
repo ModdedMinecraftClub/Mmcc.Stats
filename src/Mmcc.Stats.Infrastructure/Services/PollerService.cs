@@ -11,16 +11,14 @@ using TraceLd.MineStatSharp;
 
 namespace Mmcc.Stats.Infrastructure.Services
 {
-    /// <summary>
-    /// <inheritdoc cref="IPollerService"/>
-    /// </summary>
+    /// <inheritdoc />
     public class PollerService : IPollerService
     {
         private readonly ILogger<PollerService> _logger;
         private readonly PollerContext _context;
 
         /// <summary>
-        /// <inheritdoc cref="IPollerService"/>
+        /// Default ctor.
         /// </summary>
         /// <param name="logger">Logger</param>
         /// <param name="context">Poller database context</param>
@@ -30,10 +28,7 @@ namespace Mmcc.Stats.Infrastructure.Services
             _context = context;
         }
 
-        /// <summary>
-        /// Polls all active MC servers for playerbase statistics.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation</returns>
+        /// <inheritdoc />
         public async Task PollAsync()
         {
             var pings = new LinkedList<Ping>();

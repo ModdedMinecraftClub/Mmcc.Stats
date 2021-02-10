@@ -103,7 +103,7 @@ namespace Mmcc.Stats
                 // add basic info;
                 settings.PostProcess = document =>
                 {
-                    document.Info.Version = "v1";
+                    document.Info.Version = "v2";
                     document.Info.Title = "MMCC Stats API";
                     document.Info.Description = "API for MMCC Statistics.";
                     document.Info.License = new OpenApiLicense
@@ -133,12 +133,12 @@ namespace Mmcc.Stats
             app.UseOpenApi(settings =>
             {
                 settings.DocumentName = "openapi";
-                settings.Path = "/openapi/v1/openapi.json";
+                settings.Path = "/openapi/v2/openapi.json";
             });
             app.UseReDoc(settings =>
             {
                 settings.Path = "/docs";
-                settings.DocumentPath = "/openapi/v1/openapi.json";
+                settings.DocumentPath = "/openapi/v2/openapi.json";
             });
             
             app.UseRouting();

@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Mmcc.Stats.Core.Data;
 using Mmcc.Stats.Core.Data.Dtos;
 
-namespace Mmcc.Stats.Features.PlayerbaseChartData
+namespace Mmcc.Stats.Features.Tps
 {
-    public class Get
+    public class GetChartData
     {
         public class Query : IRequest<Result>
         {
@@ -34,7 +34,7 @@ namespace Mmcc.Stats.Features.PlayerbaseChartData
 
         public class Result
         {
-            public IList<ServerPlayerbaseChartData> ServersChartData { get; set; }
+            public IList<ServerTpsChartData> ServersChartData;
         }
 
         public class Handler : IRequestHandler<Query, Result>
@@ -53,28 +53,28 @@ namespace Mmcc.Stats.Features.PlayerbaseChartData
                     request.ToDateTime = request.ToDateTime.AddDays(1);
                 }
 
-                var data = (await _context.Pings
+                var data = (await _context.TpsStats
                         .AsNoTracking()
                         .Include(s => s.Server)
-                        .Where(x => x.PingTime.Date >= request.FromDateTime.Date &&
-                                    x.PingTime.Date <= request.ToDateTime.Date)
+                        .Where(x => x.StatTime.Date >= request.FromDateTime.Date &&
+                                    x.StatTime.Date <= request.ToDateTime.Date)
                         .Select(s => new
                         {
                             s.ServerId,
                             s.Server.ServerName,
-                            s.PingTime,
-                            s.PlayersOnline
+                            s.StatTime,
+                            s.Tps
                         })
                         .ToListAsync(cancellationToken))
-                    .GroupBy(ping => ping.ServerId)
-                    .Select(serverPing => new ServerPlayerbaseChartData
+                    .GroupBy(queryResult => queryResult.ServerId)
+                    .Select(serverTpsStat => new ServerTpsChartData
                     {
-                        ServerName = serverPing.First().ServerName,
-                        Times = serverPing.Select(x => x.PingTime),
-                        Players = serverPing.Select(x => (double) x.PlayersOnline)
+                        ServerName = serverTpsStat.First().ServerName,
+                        Times = serverTpsStat.Select(x => x.StatTime),
+                        Tps = serverTpsStat.Select(x => x.Tps)
                     })
                     .ToList();
-
+                
                 return new Result
                 {
                     ServersChartData = data

@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Mmcc.Stats.Core.Data.Dtos;
 using Mmcc.Stats.Core.Data.Models;
 
 namespace Mmcc.Stats.Features.Pings
@@ -30,7 +31,7 @@ namespace Mmcc.Stats.Features.Pings
             return Ok(res);
         }
 
-        [HttpGet("/server/{id}")]
+        [HttpGet("server/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<Ping>>> GetByServerId([FromRoute] GetByServerId.Query query)
@@ -49,6 +50,24 @@ namespace Mmcc.Stats.Features.Pings
             if (res is null)
                 return NotFound();
             return Ok(res);
+        }
+        
+        [HttpGet("chart")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IEnumerable<ServerPlayerbaseChartData>>> GetChartData([FromQuery] GetChartData.Query query)
+        {
+            var result = await _mediator.Send(query);
+            return Ok(result.ServersChartData);
+        }
+
+        [HttpGet("chart/avg")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IEnumerable<ServerPlayerbaseChartData>>> GetChartDataAsAvg([FromQuery] GetChartDataAsAvg.Query query)
+        {
+            var result = await _mediator.Send(query);
+            return Ok(result.ServerAvgChartDataDtos);
         }
     }
 }
