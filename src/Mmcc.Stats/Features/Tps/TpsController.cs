@@ -62,5 +62,14 @@ namespace Mmcc.Stats.Features.Tps
             var result = await _mediator.Send(query);
             return Ok(result.ServersChartData);
         }
+        
+        [HttpGet("weekly/avg")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<GetWeeklyAvg.Result>> GetWeeklyAvgs()
+        {
+            var res = await _mediator.Send(new GetWeeklyAvg.Query());
+            return Ok(res);
+        }
     }
 }

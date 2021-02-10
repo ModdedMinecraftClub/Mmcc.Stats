@@ -1,5 +1,5 @@
-<Project>
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk.Web" />
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
@@ -24,20 +24,5 @@
     <ProjectReference Include="..\Mmcc.Stats.Core\Mmcc.Stats.Core.csproj" />
     <ProjectReference Include="..\Mmcc.Stats.Infrastructure\Mmcc.Stats.Infrastructure.csproj" />
   </ItemGroup>
-  
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.Web" />
-  
-  <Target Name="BuildSvelte" BeforeTargets="Build">
-    <Message Importance="High" Text="Building Svelte" />
-    <Exec WorkingDirectory="$(ProjectDir)..\Mmcc.Stats.Frontend" Command="npm run build" />
-  </Target>
-  
-  <Target Name="CopySvelte" AfterTargets="BuildSvelte" DependsOnTargets="BuildSvelte">
-    <ItemGroup>
-      <SvelteCompiled Include="$(ProjectDir)..\Mmcc.Stats.Frontend\public\**\*.*" />
-    </ItemGroup>
-    <Message Importance="High" Text="Copying compiled Svelte files" />
-    <Copy SourceFiles="@(SvelteCompiled)" DestinationFiles="@(SvelteCompiled->'$(ProjectDir)..\Mmcc.Stats\wwwroot\%(RecursiveDir)%(Filename)%(Extension)')" />
-  </Target>
-  
+
 </Project>
