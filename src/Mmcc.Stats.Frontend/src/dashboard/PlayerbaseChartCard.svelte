@@ -1,5 +1,10 @@
 <script lang="ts">
-    let modes = [
+    interface IMode {
+        id: number,
+        text: string,
+    };
+
+    let modes: IMode[] = [
         { id: 0, text: "Daily rolling average" },
         { id: 1, text: "Weekly rolling average" },
         { id: 2, text: "Raw data" },
@@ -8,6 +13,7 @@
 
 <div class="card">
     <div class="lg:px-4 lg:my-4">
+        <h3 class="mb-4 text-gray-400 tracking-wide uppercase">Playerbase</h3>
         <div class="flex flex-wrap gap-3">
             <div>
                 <label
