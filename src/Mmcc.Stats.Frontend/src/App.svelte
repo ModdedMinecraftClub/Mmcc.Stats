@@ -2,10 +2,6 @@
 	import DashboardMain from "./dashboard/DashboardMain.svelte";
 	import Footer from "./Footer.svelte";
 	import Navbar from "./navigation/Navbar.svelte";
-
-	// html, body, main {
-	//	 @apply h-full;
-	// }
 </script>
 
 <main>
@@ -18,6 +14,10 @@
 	@tailwind base;
 	@tailwind components;
 	@tailwind utilities;
+
+	html, body {
+		@apply h-full bg-gray-900;
+	}
 
 	body {
 		@apply font-body;
