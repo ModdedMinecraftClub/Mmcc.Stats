@@ -5,16 +5,20 @@
     import type { IValidationResult } from "../validation";
     import { validateDatePair } from "../validation";
     import type { ServerTpsChartData, TpsClient } from "../clients";
+    import { getDefaultInputDates } from "../dateUtils";
+    import type { IDatePeriodStrings } from "../dateUtils";
 
     export let tpsClient: TpsClient;
 
     let showChartDiv: boolean = false;
     let loading: boolean = false;
-    let fromDateInput: string;
-    let toDateInput: string;
+    let defaultDates: IDatePeriodStrings = getDefaultInputDates();    
+    let fromDateInput: string = defaultDates.fromDate;
+    let toDateInput: string = defaultDates.toDate;
     let traces: any[] = [];
 
     async function handleGoClick(): Promise<void> {
+        traces = [];
         showChartDiv = true;
         loading = true;
 
