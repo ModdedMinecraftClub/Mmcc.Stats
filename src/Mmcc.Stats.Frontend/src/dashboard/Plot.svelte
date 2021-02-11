@@ -20,6 +20,7 @@
         showlegend: true,
         legend: {
             orientation: "h",
+            y: 1.5,
         },
     };
     // default values, can be overwritten by parent;
