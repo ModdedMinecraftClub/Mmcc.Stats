@@ -16,7 +16,7 @@ MMCC Statistics (player count & TPS) - available at [poller.moddedminecraft.club
 *All of the dependecies are cross-platform and can be installed on Windows, Linux and macOS.*
 
 - [PowerShell (Core) >= 7.0.3](https://github.com/PowerShell/PowerShell)
-- [.NET >= 5.0](https://dotnet.microsoft.com/download)
+- [.NET SDK >= 5.0](https://dotnet.microsoft.com/download)
 - [Node.js >= 12.18.3](https://nodejs.org/en/)
 
 **1.** Clone this repository. From now on we will be referring to the root directory of the cloned repository as `./`.
