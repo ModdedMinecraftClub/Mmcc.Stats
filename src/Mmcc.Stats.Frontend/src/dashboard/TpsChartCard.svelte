@@ -21,6 +21,8 @@
         let validationResult: IValidationResult = validateDatePair(fromDateInput, toDateInput);
 
         if (validationResult.errorMsg) {
+            loading = false;
+            showChartDiv = false;
             alert(validationResult.errorMsg);
             return;
         }
