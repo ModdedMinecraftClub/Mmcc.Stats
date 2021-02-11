@@ -1,7 +1,5 @@
 <script lang="ts">
     import type {
-        Average,
-        Average2 as TpsAverage,
         Result as TpsWeeklyAvgs,
         Result2 as PingsWeeklyAvgs,
     } from "../clients";
