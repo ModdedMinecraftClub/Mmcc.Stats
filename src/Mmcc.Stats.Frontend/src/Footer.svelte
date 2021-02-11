@@ -49,12 +49,12 @@
 >
     <div class="flex gap-x-8 flex-wrap">
         {#each items as item}
-            <a class="text-lg" href={item.href}>{item.name}</a>
+            <a class="text-lg hover:text-gray-400 duration-300" href={item.href}>{item.name}</a>
         {/each}
     </div>
     <div class="flex gap-x-8 mt-6 flex-wrap">
         {#each socials as social}
-            <a href={social.href} class="h-6 w-6">
+            <a href={social.href} class="h-6 w-6 hover:text-gray-400 duration-300">
                 <svelte:component this={social.icon} />
             </a>
         {/each}
