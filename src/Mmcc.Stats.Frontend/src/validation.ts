@@ -3,7 +3,7 @@ export interface IValidationResult {
 }
 
 export function validateDatePair(fromDate: string, toDate: string): IValidationResult {
-    if (fromDate === '' || toDate === '' || fromDate === undefined || toDate === undefined) {
+    if (fromDate === "" || toDate === "" || fromDate === undefined || toDate === undefined) {
         return {
             errorMsg: "Date cannot be empty"
         };
