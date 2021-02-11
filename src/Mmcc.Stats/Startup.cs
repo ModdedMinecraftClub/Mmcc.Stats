@@ -63,7 +63,7 @@ namespace Mmcc.Stats
                     builder.UseMySql(connString, serverVersion);
                 });
 
-            services.AddMediatR(typeof(Startup));
+            services.AddMediatR(typeof(Startup), typeof(ValidateTokenViaDb));
 
             services.AddSingleton<FluentValidationSchemaProcessor>();
             services.AddScoped<IPollerService, PollerService>();
