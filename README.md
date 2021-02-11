@@ -7,7 +7,7 @@ MMCC Statistics (player count & TPS) - available at [poller.moddedminecraft.club
 ## OpenAPI
 
 - API documentation: <https://poller.moddedminecraft.club/docs/>
-- JSON OpenAPI specification: <https://poller.moddedminecraft.club/openapi/v1/openapi.json>
+- JSON OpenAPI specification: <https://poller.moddedminecraft.club/openapi/v2/openapi.json>
 
 ## Build Release version
 
