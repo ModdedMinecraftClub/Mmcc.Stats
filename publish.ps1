@@ -1,3 +1,5 @@
+# Build script to create a production bundle ready for deployment on the dedicated server.
+# The production bundle will be output to "./out".
 $stopWatch = New-Object -TypeName System.Diagnostics.Stopwatch
 $stopWatch.Start()
 $starter_location = Get-Location
@@ -57,4 +59,4 @@ Write-Host "`nCopied the Svelte bundle.`n"
 
 $stopWatch.Stop()
 
-Write-Host "`nBuild succeeded in $($stopWatch.Elapsed)`n"
+Write-Host "`nBuild succeeded in $($stopWatch.Elapsed). Output to: `"./out`".`n"
