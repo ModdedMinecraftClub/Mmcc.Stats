@@ -1,7 +1,3 @@
-<script lang="ts">
-    export let size: number;
-</script>
-
 <div class="flex justify-center items-center">
     <svg
     aria-hidden="true"

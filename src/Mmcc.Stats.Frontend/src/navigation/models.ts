@@ -1,5 +1,3 @@
-import type { SvelteComponent } from "svelte";
-
 export interface IMenuItemContent {
     name: string,
     href: string,
