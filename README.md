@@ -4,8 +4,6 @@
 
 MMCC Statistics (player count & TPS) - available at [poller.moddedminecraft.club](https://poller.moddedminecraft.club/).
 
-![screenshot](./screenshots/web_app.png)
-
 ## OpenAPI
 
 - API documentation: <https://poller.moddedminecraft.club/docs/>
@@ -17,16 +15,14 @@ MMCC Statistics (player count & TPS) - available at [poller.moddedminecraft.club
 
 *All of the dependecies are cross-platform and can be installed on Windows, Linux and macOS.*
 
-- PowerShell >= 7.0.3
-- .NET Core >= 3.1
-- Node.js >= 12.18.3
+- [PowerShell (Core) >= 7.0.3](https://github.com/PowerShell/PowerShell)
+- [.NET >= 5.0](https://dotnet.microsoft.com/download)
+- [Node.js >= 12.18.3](https://nodejs.org/en/)
 
-**1.** Clone this repository. From now on we'll refer to the root directory of the cloned repository as `./`
+**1.** Clone this repository. From now on we will be referring to the root directory of the cloned repository as `./`.
 
 **2.** Rename `./src/Mmcc.Stats/appsettings.default.json` to `./src/Mmcc.Stats/appsettings.json` and fill it in.
 
-**3.** Go to `./src/Mmcc.Stats.Frontend` and run `npm install`.
-
-**3.** In the root directory of the cloned repository run the following command: `./publish.ps1`.
+**3.** Run the `./publish.ps1` build script.
 
 **4.** You will find the compiled version of the app in `./out`.
