@@ -14,4 +14,8 @@ export function validateDatePair(fromDate: string, toDate: string): IValidationR
             errorMsg: "From date cannot be bigger than To date"
         };
     }
+
+    return {
+        errorMsg: null
+    };
 }
