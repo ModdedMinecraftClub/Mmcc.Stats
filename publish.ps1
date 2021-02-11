@@ -2,16 +2,25 @@ $stopWatch = New-Object -TypeName System.Diagnostics.Stopwatch
 $stopWatch.Start()
 $starter_location = Get-Location
 
+function Check-LastCmd {
+    
+    param(
+        [string]$ErrorMessage
+    )
+
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host $ErrorMessage
+        exit
+    }
+}
+
 Remove-Item ./out -Recurse -ErrorAction Ignore
 
 Write-Host "`nBuilding the ASP.NET Core back-end...`n"
 
 dotnet publish ./src/Mmcc.Stats -c Release --output ./out
 
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "`nError while building the ASP.NET Core back-end. Exiting...`n"
-    exit
-}
+Check-LastCmd -ErrorMessage "`nError while building the ASP.NET Core back-end. Exiting...`n"
 
 Write-Host "`Built the ASP.NET Core back-end.`n"
 
@@ -21,30 +30,21 @@ Write-Host "`nRestoring npm packages...`n"
 
 npm install
 
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "`nError while restoring npm packages. Exiting...`n"
-    exit
-}
+Check-LastCmd -ErrorMessage "`nError while restoring npm packages. Exiting...`n"
 
 Write-Host "`nRestored npm packages.`n"
 Write-Host "`nApplying security fixes...`n"
 
 npm audit fix
 
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "`nError while applying fixes. Exiting...`n"
-    exit
-}
+Check-LastCmd "`nError while applying fixes. Exiting...`n"
 
 Write-Host "`nApplied security fixes.`n"
 Write-Host "`nBuilding the Svelte app...`n"
 
 npm run build
 
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "`nError while building the Svelte app. Exiting...`n"
-    exit
-}
+Check-LastCmd -ErrorMessage "`nError while building the Svelte app. Exiting...`n"
 
 Write-Host "`nBuilt the Svelte app.`n"
 Write-Host "`nCopying the Svelte bundle..."
