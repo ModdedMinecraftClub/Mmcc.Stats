@@ -20,7 +20,7 @@
 
         let validationResult: IValidationResult = validateDatePair(fromDateInput, toDateInput);
 
-        if (validationResult) {
+        if (validationResult.errorMsg) {
             alert(validationResult.errorMsg);
             return;
         }
