@@ -6,7 +6,7 @@
 
 <a
     href={content.href}
-    class="block mt-4 lg:inline-block lg:mt-0 hover:text-gray-400 mr-4 duration-300"
+    class="block mt-4 mr-4 lg:inline-block lg:mt-0 hover:text-gray-400 duration-300"
 >
     {content.name}
 </a>
