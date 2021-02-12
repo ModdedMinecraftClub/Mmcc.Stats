@@ -11,6 +11,9 @@ module.exports = {
       colors: {
         gray: colors.blueGray
       },
+      height: {
+        "136": "34rem"
+      }
     },
   },
   variants: {

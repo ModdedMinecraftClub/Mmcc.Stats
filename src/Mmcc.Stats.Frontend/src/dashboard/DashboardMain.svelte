@@ -11,7 +11,7 @@
     import WeeklyTrendsCard from "./WeeklyTrendsCard.svelte";
     import { fade } from "svelte/transition";
     import TpsChartCard from "./TpsChartCard.svelte";
-import ApiError from "../ApiError.svelte";
+    import ApiError from "../ApiError.svelte";
 
     interface IBasicInfo {
         tpsAvg: TpsWeeklyAvgs;
