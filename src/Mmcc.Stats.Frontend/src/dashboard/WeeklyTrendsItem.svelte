@@ -14,7 +14,7 @@
     let tpsString = getCorrespondingTpsString(thisAvg);
 
     function getDifferenceString(thisWeek: number, lastWeek: number): string {
-        if (lastWeek === 0) return "+100%";
+        if (lastWeek === 0) return "+100.00%";
         const v: number = ((thisWeek - lastWeek) / lastWeek) * 100;
         const vFixed: string = v.toFixed(2);
         if (v >= 0) return `+${vFixed}%`;
@@ -59,7 +59,7 @@
             <div
                 class:bg-green-500={differenceString.startsWith("+")}
                 class:bg-red-500={differenceString.startsWith("-")}
-                class="rounded text-sm px-2 py-1 ml-3 w-28 md:w-48 text-center"
+                class="rounded text-sm px-2 py-1 ml-3 w-24 md:w-48 text-center"
             >
                 <span class="font-bold"
                     >{differenceString}</span

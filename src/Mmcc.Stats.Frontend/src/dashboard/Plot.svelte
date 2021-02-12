@@ -20,8 +20,12 @@
         showlegend: true,
         legend: {
             orientation: "h",
-            y: 1.5,
+            y: 2,
         },
+        margin: {
+            l: 30,
+            r: 30,
+        }        
     };
     // default values, can be overwritten by parent;
     export let config: any = { responsive: true };

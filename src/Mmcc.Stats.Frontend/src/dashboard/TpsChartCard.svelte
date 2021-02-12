@@ -87,7 +87,7 @@
                     type="date"
                     class="border-none bg-gray-700 text-gray-100 rounded"
                 />
-                <button on:click={handleGoClick} class="px-8 lg:px-4 py-2 mt-3 lg:mt-0 lg:ml-2 bg-blue-500 text-gray-100 rounded focus:outline-none focus:ring focus:ring-blue-300">Go</button>
+                <button on:click={handleGoClick} class="px-8 lg:px-4 py-2 mt-0 ml-2 bg-blue-500 text-gray-100 rounded focus:outline-none focus:ring focus:ring-blue-300">Go</button>
 
             </div>
         </div>
