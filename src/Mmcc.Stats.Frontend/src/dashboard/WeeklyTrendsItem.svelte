@@ -10,6 +10,9 @@
     export let pingsWeeklyAvgs: PingsWeeklyAvgs;
     export let tpsWeeklyAvgs: TpsWeeklyAvgs;
 
+    let differenceString = getDifferenceString(thisAvg.avg, getCorrespondingLastWeek(thisAvg));
+    let tpsString = getCorrespondingTpsString(thisAvg);
+
     function getDifferenceString(thisWeek: number, lastWeek: number): string {
         if (lastWeek === 0) return "+100%";
         const v: number = ((thisWeek - lastWeek) / lastWeek) * 100;
@@ -54,21 +57,12 @@
                 </p>
             </div>
             <div
-                class:bg-green-500={getDifferenceString(
-                    thisAvg.avg,
-                    getCorrespondingLastWeek(thisAvg)
-                ).startsWith("+")}
-                class:bg-red-500={getDifferenceString(
-                    thisAvg.avg,
-                    getCorrespondingLastWeek(thisAvg)
-                ).startsWith("-")}
+                class:bg-green-500={differenceString.startsWith("+")}
+                class:bg-red-500={differenceString.startsWith("-")}
                 class="rounded text-sm px-2 py-1 ml-3 w-28 md:w-48 text-center"
             >
                 <span class="font-bold"
-                    >{getDifferenceString(
-                        thisAvg.avg,
-                        getCorrespondingLastWeek(thisAvg)
-                    )}</span
+                    >{differenceString}</span
                 >
                 <span class="font-light hidden md:inline-block">vs last week</span>
             </div>
@@ -76,7 +70,7 @@
         <div class="border-l border-gray-500 h-8 w-1 mr-3 ml-4" />
         <div>
             <p class="text-3xl mb-0">
-                {getCorrespondingTpsString(thisAvg)}
+                {tpsString}
             </p>
             <p class="font-light text-xs text-gray-500 -mt-1">
                 avg tps
